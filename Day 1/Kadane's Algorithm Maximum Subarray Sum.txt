@@ -1,0 +1,83 @@
+Kadane’s Algorithm : Maximum Subarray Sum in an Array
+-----------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given an integer array arr, find the contiguous subarray (containing at least one number) which
+has the largest sum and returns its sum and prints the subarray
+
+Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+Output: 6
+Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+-----------------------------------------------------------------------------------------------------------------------------------------
+int maxSubArray(vector<int>& nums) {
+	int n = nums.size();
+	int maxi = INT_MIN;
+	for(int i = 0; i < n; i++) {
+		for(int j = i; j < n; j++) {
+			int sum = 0;
+			for(int k = i; k<=j; k++) {
+				sum += arr[k];
+			}
+			maxi = max(maxi, sum);
+		}
+	}
+	return maxi;
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+int maxSubArray(vector<int>& nums) {
+	int n = nums.size();
+	int maxi = INT_MIN;
+	for(int i = 0; i < n; i++) {
+		int sum = 0;
+		for(int j = i; j < n; j++) {
+			sum += arr[j];
+			maxi = max(maxi, sum);
+		}
+	}
+	return maxi;
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+int maxSubArray(vector<int>& nums) {
+	int n = nums.size();
+	int maxi = INT_MIN;
+	int sum = 0;
+	for(int i = 0; i < n; i++) {
+		sum += arr[i];
+		
+		maxi = max(maxi, sum);
+		
+		if(sum < 0) sum = 0;
+	}
+	return maxi;
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given an integer array arr, print the contiguous subarray (containing at least one number) which
+has the largest sum and returns its sum and prints the subarray
+
+vector<int> maxSubArray(vector<int>& nums) {
+	int n = nums.size();
+	int maxi = INT_MIN;
+	int sum = 0;
+	int start = 0;
+	int ansStart = -1;
+	int last = -1;
+	for(int i = 0; i < n; i++) {
+		if(sum == 0) start = i;
+		sum += arr[i];
+		
+		if(sum > maxi) {
+			maxi = sum;
+			ansStart = start;
+			last = i;
+		}
+		
+		if(sum < 0) {
+			sum = 0;
+		}
+	}
+	
+	vector<int>ans;
+	for(int i = ansStart; i<=last; i++) {
+		ans.push_back(nums[i]);
+	}
+	return ans;
+}

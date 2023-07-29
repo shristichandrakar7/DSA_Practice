@@ -1,0 +1,61 @@
+Top K Frequent Elements
+------------------------------------------------------------------------------------------------------------------------------------------
+Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+
+Example 1:
+Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+
+Example 2:
+Input: nums = [1], k = 1
+Output: [1]
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC: O(n log n)
+SC: O(2n)
+
+static bool cmp(pair<int, int>& a, pair<int, int>& b) {
+	return a.second > b.second;
+}
+vector<int> topKFrequent(vector<int>& nums, int k) {
+	unordered_map<int, int>mp;
+	for(auto it : nums) {
+		mp[it]++;
+	}
+	vector<pair<int, int>>vec;
+	for(auto it : mp) vec.push_back(it);
+	sort(vec.begin(), vec.end(), cmp);
+	vector<int>ans;
+	for(auto it : vec) {
+		if(k--) {
+			ans.push_back(it.first);
+		}
+		else break;
+	}
+	return ans;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC: O(n log k)
+SC: O(n)
+
+vector<int> topKFrequent(vector<int>& nums, int k) {
+	unordered_map<int, int>mp;
+	for(auto it : nums) {
+		mp[it]++;
+	}
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>>pq;
+	for(auto it : mp) {
+		pq.push({it.second, it.first});
+		if(pq.size() > k) pq.pop();
+	}
+	vector<int>ans;
+	while(!pq.empty()) {
+		auto it = pq.top();
+		pq.pop();
+		ans.push_back(it.second);
+	}
+	return ans;
+}

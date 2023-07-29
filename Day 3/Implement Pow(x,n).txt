@@ -1,0 +1,52 @@
+Implement Pow(x,n) | X raised to the power N
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given a double x and integer n, calculate x raised to power n. Basically Implement pow(x, n).
+
+Example 1:
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+
+Example 2:
+Input: x = 2.10000, n = 3
+Output: 9.26100
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N)
+SC : O(1)
+
+double myPow(double x, int n) {
+	double ans = 1.0;
+	for(int i = 0; i < n; i++) ans *= x;
+	return ans;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+2^5 -> x = 2, n = 5
+ans = 1
+ans = ans*x = 1*2 , n = 4
+x = x * x = 2*2 = 4, n = 2
+x = x * x = 4 * 4 = 16, n = 1
+ans = ans * x = 2 * 16 = 32, n = 0
+
+TC : O(log n)
+SC : O(1)
+
+double myPow(double x, int n) {
+	double ans = 1.0;
+	long long nn = n;
+	if(n < 0) nn *= -1;
+	while(nn) {
+		if(nn % 2) {
+			ans *= x;
+			nn -= 1;
+		}
+		else {
+			x = x * x;
+			nn = nn/2;
+		}
+	}
+	if(n < 0) return (double)1.0/(double)ans;
+	return (double)ans;
+}

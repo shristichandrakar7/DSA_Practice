@@ -1,0 +1,47 @@
+M – Coloring Problem
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given an undirected graph and a number m, determine if the graph can be colored with at most m colors such that no two adjacent vertices of the graph are colored with the same color.
+
+Example 1:
+Input: 
+N = 4
+M = 3
+E = 5
+Edges[] = {
+  (0, 1),
+  (1, 2),
+  (2, 3),
+  (3, 0),
+  (0, 2)
+}
+Output: 1
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(n^m)
+SC : O(n)
+
+bool isPossible(int node, int color, bool graph[101][101], vector<int>&col) {
+	for(int i = 0; i < n; i++) {
+		if(i != node && graph[i][node] == 1 && col[i] == color) return false;
+	}
+	return true;
+}
+
+bool f(int node, int m, int n, bool graph[101][101], vector<int>&col) {
+	if(node == n) return true;
+	
+	for(int i = 1; i <= m; i++) {
+		if(isPossible(node, i, graph, col)) {
+			col[node] = i;
+			if(f(node+1, m, n, graph, col)) return true;
+			col[node] = 0;
+		}
+	}
+	return false;
+}
+
+bool graphColoring(bool graph[101][101], int m, int n) {
+	vector<int>col(n, 0);
+	return f(0, m, n, graph, col);
+}

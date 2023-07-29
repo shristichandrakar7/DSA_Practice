@@ -1,0 +1,75 @@
+Length of Longest Substring without any Repeating Character
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given a String, find the length of longest substring without any repeating character.
+
+Example 1:
+Input: s = ”abcabcbb”
+Output: 3
+
+Example 2:
+Input: s = ”bbbbb”
+Output: 1
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(n*n)
+SC : O(n)
+
+int lengthOfLongestSubstring(string s) {
+	int n = s.size();
+	int maxi = INT_MIN;
+	for(int i = 0; i < n; i++) {
+		set<char>st;
+		for(int j = i; j < n; j++) {
+			if(st.find(s[j]) != st.end()) {
+				maxi = max(maxi, j-i);
+				break;
+			}
+			st.insert(s[j]);
+		}
+	}
+	return maxi;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(2n)
+SC : O(n)
+
+int lengthOfLongestSubstring(string s) {
+	int n = s.size();
+	int maxi = INT_MIN;
+	set<char>st;
+	int j=0;
+	for(int i = 0; i < n; i++) {
+		if(st.find(s[i]) != st.end()) {
+			while(j<i && st.find(s[i]) != st.end()){
+				st.erase(s[j]);
+				j++;
+			}
+		}
+		st.insert(s[i]);
+		maxi=max(maxi, i-j+1);
+	}
+	return maxi;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 3:
+
+TC : O(n)
+SC : O(n)
+
+int lengthOfLongestSubstring(string s) {
+	int n = s.size();
+	int maxi = INT_MIN;
+	vector<int>ch(256,-1);
+	int j=0;
+	for(int i = 0; i < n; i++) {
+		if(ch[s[i]] != -1){
+			j=max(ch[s[i]]+1, j);
+		}
+		ch[s[i]]=i;
+		maxi=max(maxi, i-j+1);
+	}
+	return maxi;
+}

@@ -1,0 +1,47 @@
+Pascal's Triangle
+--------------------------
+Variation 1: Given row number r and column number c. Print the element at position (r, c) in Pascal’s triangle.
+----------------------------------------------------------------------------------------------------------------------------------
+int ncr(int n, int r){
+	int ans=1;
+	for(int i=0; i<r; i++){
+		ans*=(n-i);
+		ans/=(i+1);
+	}
+	return ans;
+}
+int pascalTriangle(int r, int c) {
+	return ncr(r-1,c-1);
+}
+
+Variation 2: Given the row number n. Print the n-th row of Pascal’s triangle.
+----------------------------------------------------------------------------------------------------------------------------------
+vector<int> pascalTriangle(int n) {
+	vector<int> v;
+	int ans=1;
+	v.push_back(ans);
+	for(int col=1; col<n; col++){
+		ans*=(n-col);
+		ans/=col;
+		v.push_back(ans);
+	}
+	return v;
+}
+
+Variation 3: Given the number of rows n. Print the first n rows of Pascal’s triangle.
+----------------------------------------------------------------------------------------------------------------------------------
+vector<vector<int>> pascalTriangle(int n) {
+	vector<vector<int>> res;
+	for(int row=1; row<=n; row++){
+		vector<int> v;
+		int ans=1;
+		v.push_back(ans);
+		for(int col=1; col<row; col++){
+			ans*=(row-col);
+			ans/=col;
+			v.push_back(ans);
+		}
+		res.push_back(v);
+	}
+	return res;
+}

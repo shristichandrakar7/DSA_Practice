@@ -1,0 +1,70 @@
+Merge two sorted Linked Lists
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given two singly linked lists that are sorted in increasing order of node values, merge two sorted linked lists and return them as a sorted list. The list should be made by splicing together the nodes of the first two lists.
+
+Input Format :
+l1 = {3,7,10}, l2 = {1,2,5,8,10}
+
+Output :
+{1,2,3,5,7,8,10,10}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N+M)
+SC : O(N+M)
+
+ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+	ListNode* dummy = new ListNode(-101);
+	ListNode* temp = dummy, *l1 = list1, *l2 = list2;
+	while(l1 && l2) {
+		if(l1 -> val <= l2 -> val) {
+			ListNode* node = l1;
+			temp -> next = node;
+			l1 = l1 -> next;
+		}
+		else {
+			ListNode* node = l2;
+			temp -> next = node;
+			l2 = l2 -> next;	
+		}
+		temp = temp -> next;
+	}
+	while(l1) {
+		ListNode* node = l1;
+		temp -> next = node;
+		l1 = l1 -> next;
+		temp = temp -> next;
+	}
+	
+	while(l2) {
+		ListNode* node = l2;
+		temp -> next = node;
+		l2 = l2 -> next;
+		temp = temp -> next;
+	}
+	return dummy -> next;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(N+M)
+SC : O(1)
+
+ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+	if(list1 == NULL) return list2;
+	if(list2 == NULL) return list1;
+	if(list1 -> val > list2 -> val) swap(list1, list2);
+	ListNode* res = list1;
+	while(list1 && list2) {
+		ListNode* temp;
+		if(list1 -> val <= list2 -> val) {
+			while(list1 && list1 -> val <= list2 -> val) {
+				temp=list1;
+				list1 = list1 -> next;
+			}
+			temp -> next = list2;
+			swap(list1, list2);
+		}
+	}
+	return res;
+}

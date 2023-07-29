@@ -1,0 +1,40 @@
+Maximum activities
+------------------------------------------------------------------------------------------------------------------------------------------
+You are given N activities with their start time Start[] and finish time Finish[]. You need to tell the maximum number of activities a single person can perform.
+NOTE :
+A person can only work on a single activity at a time. The start time of one activity can coincide with the end time of another.
+------------------------------------------------------------------------------------------------------------------------------------------
+Example1 :
+Input :
+4
+1 6 2 4 
+2 7 5 8 
+Output :
+3
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+// Time : O(n log n)
+// Space : O(n)
+
+int maximumActivities(vector<int> &start, vector<int> &finish) {
+    int n = start.size();
+    priority_queue<pair<int,int>, vector<pair<int,int>>,
+    greater<pair<int,int>>> pq;
+    for(int i = 0; i < n; i++) {
+        pq.push({finish[i],start[i]});
+    }
+    int endLimit = pq.top().first;
+    pq.pop();
+    int cnt = 1;
+    while(!pq.empty()) {
+        auto it = pq.top();
+        pq.pop();
+        int st = it.second;
+        if(st >= endLimit) {
+            cnt++;
+            endLimit = it.first;
+        }
+    }
+    return cnt;
+}

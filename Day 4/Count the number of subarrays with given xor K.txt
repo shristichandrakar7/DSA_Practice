@@ -1,0 +1,72 @@
+Count the number of subarrays with given xor K
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given an array of integers A and an integer B. Find the total number of subarrays having bitwise XOR of all elements equal to k.
+
+Example 1:
+Input Format: A = [4, 2, 2, 6, 4] , k = 6
+Result: 4
+Explanation: The subarrays having XOR of their elements as 6 are  [4, 2], [4, 2, 2, 6, 4], [2, 2, 6], [6]
+
+Example 2:
+Input Format: A = [5, 6, 7, 8, 9], k = 5
+Result: 2
+Explanation: The subarrays having XOR of their elements as 5 are [5] and [5, 6, 7, 8, 9]
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(n^3)
+SC : O(1)
+
+int subarraysWithSumK(vector<int> a, int k) {
+	int n = a.size();
+    int cnt=0;
+	for(int i = 0; i < n; i++) {
+		for(int j = i; j < n; j++) {
+			int xr=0;
+			for(int l = i; l <= j; l++) {
+				xr = xr ^ a[l];
+			}
+			
+			if(xr == k) cnt++;
+		}
+	}
+	return cnt;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(n*n)
+SC : O(1)
+
+int subarraysWithSumK(vector<int> a, int k) {
+	int n = a.size();
+    int cnt=0;
+	for(int i = 0; i < n; i++) {
+		int xr=0;
+		for(int j = i; j < n; j++) {
+			xr = xr ^ a[j];
+			if(xr == k) cnt++;
+		}
+	}
+	return cnt;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 3:
+
+TC : O(n)
+SC : O(n)
+
+int subarraysWithSumK(vector<int> a, int k) {
+	int n = a.size();
+    int cnt=0;
+	int xr = 0;
+	unordered_map<int, int>mp;
+	mp[xr]++;
+	for(int i = 0; i < n; i++) {
+		xr = xr ^ a[i];
+		int x = xr ^ k;
+		cnt += mp[x];
+		mp[xr]++;
+	}
+	return cnt;
+}

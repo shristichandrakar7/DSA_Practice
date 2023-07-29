@@ -1,0 +1,70 @@
+Next_permutation : find next lexicographically greater permutation
+----------------------------------------------------------------------------------------------------------------------------------------
+PROBLEM STATEMENT: Given an array Arr[] of integers, rearrange the numbers of the given array into the lexicographically next greater permutation of numbers.
+
+If such an arrangement is not possible, it must rearrange to the lowest possible order (i.e., sorted in ascending order).
+
+Example 1 :
+
+Input format: Arr[] = {1,3,2}
+Output: Arr[] = {2,1,3}
+Explanation: All permutations of {1,2,3} are {{1,2,3} , {1,3,2}, {2,13} , {2,3,1} , {3,1,2} , {3,2,1}}. So, the next permutation just after {1,3,2} is {2,1,3}.
+
+Example 2:
+
+Input format: Arr[] = {3,2,1}
+Output: Arr[] = {1,2,3}
+Explanation: As we see all permutations of {1,2,3}, we find {3,2,1} at the last position. So, we have to return the topmost permutation.
+----------------------------------------------------------------------------------------------------------------------------------------
+private:
+    void permute(int p, vector<int> &arr, vector<vector<int>> &res){
+        if(p==arr.size()-1) res.push_back(arr);
+        for(int i=p; i<arr.size(); i++){
+            swap(arr[i],arr[p]);
+            permute(p+1,arr,res);
+            swap(arr[i],arr[p]);
+        }
+    }
+public:
+    void nextPermutation(vector<int>& arr) {
+        int n=arr.size();
+        vector<vector<int>> res;
+        permute(0,arr,res);
+        sort(res.begin(), res.end());
+        for(int i = 0; i < res.size(); i++) {
+            if(arr == res[res.size()-1]) {
+                arr = res[0];
+                break;
+            }
+            else if(arr == res[i]) {
+                while(arr == res[i]) i = i+1;
+                arr = res[i];
+                break;
+            }
+        }
+    }
+
+----------------------------------------------------------------------------------------------------------------------------------------
+void nextPermutation(vector<int>& arr) {
+	next_permutation(arr.begin(),arr.end());
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------
+void nextPermutation(vector<int>& arr) {
+	int k;
+	for(k=n-2; k>=0; k--){
+		if(arr[k]<arr[k+1]) {
+			break;
+		}
+	}
+	if(k<0){ 
+		reverse(arr.begin(), arr.end());
+		return;
+	}
+	int l;
+	for(l=n-1; l>=k; l--){
+		if(arr[l]>arr[k]) break;
+	}
+	swap(arr[k], arr[l]);
+	reverse(arr.begin()+k+1, arr.end());
+}

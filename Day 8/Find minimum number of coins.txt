@@ -1,0 +1,62 @@
+Find minimum number of coins
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given a value V, if we want to make a change for V Rs, and we have an infinite supply of each of the denominations in Indian currency, i.e., we have an infinite supply of { 1, 2, 5, 10, 20, 50, 100, 500, 1000} valued coins/notes, what is the minimum number of coins and/or notes needed to make the change.
+
+Example 1:
+Input: V = 70
+Output: 2
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC: O(V)
+SC:	O(1)
+
+vector<int> MinimumCoins(int V){
+    int coins[] = {1, 2, 5, 10, 20, 50, 100, 500, 1000};
+    int n = 9;
+    vector<int> ans;
+    for (int i = n - 1; i >= 0; i--) {
+      while (V >= coins[i]) {
+        V -= coins[i];
+        ans.push_back(coins[i]);
+      }
+    }
+    return ans;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement:
+Given a value V and array coins[] of size M, the task is to make the change for V cents, given that you have an infinite supply of each of coins{coins1, coins2, ..., coinsm} valued coins. Find the minimum number of coins to make the change. If not possible to make change then return -1
+
+Input: V = 30, M = 3, coins[] = {25, 10, 5}
+Output: 2
+Explanation: Use one 25 cent coin
+and one 5 cent coin
+
+Input: V = 11, M = 4,coins[] = {9, 6, 5, 1} 
+Output: 2 
+Explanation: Use one 6 cent coin
+and one 5 cent coin
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC: O(n*v)
+SC:	O(n*v) + O(n)
+
+long long f(int i, int coins[], int n, int v, vector<vector<int>>& dp) {
+	if(v==0) return 0;
+	if(i == n) return INT_MAX;
+	if(dp[i][v] != -1) return dp[i][v];
+	
+	long long notTake = 0 + f(i+1, coins, n, v, dp);
+	long long take = INT_MAX;
+	if(v >= coins[i]) take = 1 + f(i, coins, n, v-coins[i], dp);
+	return dp[i][v] = min(notTake, take);
+}
+
+int minCoins(int coins[], int n, int v) 
+{ 
+	vector<vector<int>>dp(n+1, vector<int>(v+1, -1));
+	int res = f(0, coins, n, v, dp);
+	if(res == INT_MAX) return -1;
+	return res;
+} 

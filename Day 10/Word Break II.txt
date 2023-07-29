@@ -1,0 +1,52 @@
+Word Break II
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement:
+You are given a non-empty string S containing no spaces’ and a dictionary of non-empty strings (say the list of words). You are supposed to construct and return all possible sentences after adding spaces in the originally given string ‘S’, such that each word in a sentence exists in the given dictionary.
+
+Example:
+
+Input:
+1
+6
+god is now no where here
+godisnowherenowhere
+
+Output:
+god is no where no where
+god is no where now here
+god is now here no where
+god is now here now here
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(n*2^(n-1))
+SC : O(n*2^(n-1))
+
+void f(int i, string &s, unordered_map<string,int>&mp, vector<string>& ans, string &temp) {
+    if(i == s.size()) {
+		temp.pop_back();
+        ans.push_back(temp);
+        return;
+    }
+    for(int j = i; j < s.size(); j++) {
+        int size1 = temp.size();
+        if(mp[s.substr(i,j-i+1)]) {
+            temp += (s.substr(i,j-i+1));
+            temp.push_back(' ');
+            f(j+1, s, mp, ans, temp);
+            int size2 = temp.size();
+            while(size1 != size2) {
+                temp.pop_back();
+                size2--;
+            }
+        }
+    }
+}
+vector<string> wordBreak(string &s, vector<string> &dictionary) {
+    vector<string>ans;
+    unordered_map<string,int>mp;
+    for(auto it : dictionary) mp[it]++;
+    string temp;
+    f(0, s, mp, ans, temp);
+    return ans;
+}

@@ -1,0 +1,137 @@
+Merge two Sorted Arrays Without Extra Space
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem statement: Given two sorted arrays arr1[] and arr2[] of sizes n and m in non-decreasing order. Merge them in sorted order. Modify arr1 so that it contains the first N elements and modify arr2 so that it contains the last M elements.
+
+Example 1:
+
+Input: 
+n = 4, arr1[] = [1 4 8 10] 
+m = 5, arr2[] = [2 3 9]
+
+Output: 
+arr1[] = [1 2 3 4]
+arr2[] = [8 9 10]
+
+Explanation:
+After merging the two non-decreasing arrays, we get, 1,2,3,4,8,9,10.
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(2(n+m))
+SC : O(n+m)
+
+void merge(long long arr1[], long long arr2[], int n, int m) {
+	vector<int> ans;
+	int i=0, j=0;
+	while(i<n && j<m){
+		if(arr1[i]<=arr2[j]) ans.push_back(arr1[i++]);
+		else ans.push_back(arr2[j++]);
+	}
+	while(i<n) ans.push_back(arr1[i++]);
+	while(j<m) ans.push_back(arr2[j++]);
+	int j=0, k=0;
+	for(int i=0; i<ans.size(); i++){
+		if(j<n){ arr1[j]=ans[i]; j++;}
+		else if(k<m) {arr2[k]=ans[i]; k++;}
+	}
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(min(n, m)) + O(n log n) + O(m log m)
+SC : O(1)
+
+void merge(long long arr1[], long long arr2[], int n, int m) {
+	int i = n-1;
+	int j = 0;
+	while(i >= 0 && j < m) {
+		if(arr1[i] > arr2[j]) {
+			swap(arr1[i], arr2[j]);
+			i--;
+			j++;
+		}
+		else break;
+	}
+	sort(arr1, arr1+n);
+	sort(arr2, arr2+m);
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 3: Gap Method
+
+TC : O(log(n+m) * (n+m)) 
+SC : O(1)
+
+void swapGreater(long long arr1[], long long arr2[], int i, int j) {
+	if(arr1[i] > arr2[j]) swap(arr1[i], arr2[j]);
+}
+
+void merge(long long arr1[], long long arr2[], int n, int m) {
+	int len = n+m;
+	int gap = (len / 2) + (len % 2);
+	while(gap > 0) {
+		int left = 0;
+		int right = left + gap;
+		while(right < len) {
+			// left -> arr1, right -> arr2
+			if(left < n && right >= n) {
+				swapGreater(arr1, arr2, left, right-n);
+			}
+			// left -> arr2, right -> arr2
+			else if(left >= n && right >= n) {
+				swapGreater(arr2, arr2, left-n, right-n);
+			}
+			// left -> arr1, right -> arr1
+			else {
+				swapGreater(arr1, arr1, left, right);
+			}
+			left++;
+			right++;
+		}
+		if(gap == 1) break;
+		gap = (gap/2) + (gap % 2);
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+Output: [1,2,2,3,5,6]
+Explanation: The arrays we are merging are [1,2,3] and [2,5,6].
+The result of the merge is [1,2,2,3,5,6] with the underlined elements coming from nums1.
+
+Approach 1:
+
+TC : O(2(n+m))
+SC : O(n+m)
+
+void merge(vector<int>& arr1, int n, vector<int>& arr2, int m) {
+	vector<int> ans;
+	int i=0, j=0;
+	while(i<n && j<m){
+		if(arr1[i]<=arr2[j]) ans.push_back(arr1[i++]);
+		else ans.push_back(arr2[j++]);
+	}
+	while(i<n) ans.push_back(arr1[i++]);
+	while(j<m) ans.push_back(arr2[j++]);
+	int k=0;
+	for(it: ans){
+		arr1[k++]=it;
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Approach 2:
+
+TC : O(n+m)
+SC : O(1)
+
+void merge(vector<int>& arr1, int n, vector<int>& arr2, int m) {
+	int i=n-1, j=m-1, k=n+m-1;
+	while(i>=0 && j>=0){
+		if(arr1[i]<=arr2[j]) arr1[k--]=arr2[j--];
+		else arr1[k--]=arr1[i--];
+	}
+	while(i>=0) arr1[k--]=arr1[i--];
+	while(j>=0) arr1[k--]=arr2[j--];
+}

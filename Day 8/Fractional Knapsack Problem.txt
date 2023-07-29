@@ -1,0 +1,35 @@
+Fractional Knapsack Problem
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: The weight of N items and their corresponding values are given. We have to put these items in a knapsack of weight W such that the total value obtained is maximized.
+
+Example:
+Input: N = 3, W = 50, values[] = {100,60,120}, weight[] = {20,10,30}.
+Output: 240.00
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC: O(NlogN+N)
+SC: O(1)
+
+bool static cmp(Item a, Item b){
+	double w1=(double)a.value/(double)a.weight;
+	double w2=(double)b.value/(double)b.weight;
+	return w1>w2;
+}
+double fractionalKnapsack(int W, Item arr[], int n){
+	sort(arr, arr+n, cmp);
+	
+	int curw=0;
+	double curv=0.0;
+	for(int i=0; i<n; i++){
+		if(curw+arr[i].weight<=W){
+			curw +=arr[i].weight;
+			curv +=arr[i].value;
+		}else{
+			int remain=W-curw;
+			curv+=(double)arr[i].value/(double)arr[i].weight*(double)remain;
+			break;
+		}
+	}
+	return curv;
+}

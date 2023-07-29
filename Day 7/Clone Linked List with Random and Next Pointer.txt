@@ -1,0 +1,75 @@
+Clone Linked List with Random and Next Pointer
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given a Linked list that has two pointers in each node and one of which points to the first node and the other points to any random node. Write a program to clone the LinkedList.
+
+Example 2:
+Input:
+head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+Output: 
+head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(2n)
+SC : O(n)
+
+Node* copyRandomList(Node* head) {
+	unordered_map<Node*, Node*> mp;
+	Node* dummy = new Node(-1);
+	Node* temp = head;
+	Node* start = dummy;
+	while(temp) {
+		Node* cur = new Node(temp -> val);
+		mp[temp] = cur;
+		temp = temp -> next;
+		start->next=cur;
+		start = cur;
+	}
+	temp = head;
+	start = dummy -> next;
+	while(temp) {
+		if(temp -> random) start -> random = mp[temp -> random];
+		temp = temp -> next;
+		start = start -> next;
+	}
+	return dummy -> next;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(3N)
+SC : O(1)
+
+Node* copyRandomList(Node* head) {
+	Node* temp = head;
+	Node* itr = head -> next;
+	while(temp) {
+		Node* cur = new Node(temp -> val);
+		temp -> next = cur;
+		cur -> next = itr;
+		temp = itr;
+		if(itr) itr = itr -> next;
+	}
+
+	itr = head;
+	temp = head -> next; 
+	while(itr) {
+		if(itr -> random) temp -> random = itr -> random -> next;
+		temp = (temp -> next != NULL)? temp -> next -> next : NULL;
+		itr = itr -> next -> next;
+	}
+	Node* dummy = new Node(-1);
+	itr = head;
+	temp = itr -> next;
+	Node* fast = itr -> next -> next;
+	dummy -> next = temp;
+	while(fast) {
+		temp -> next = fast -> next;
+		itr -> next = fast;
+		temp = fast -> next;
+		itr = fast;
+		fast = temp -> next;
+	}
+	itr->next=NULL;
+	return dummy -> next;
+}

@@ -1,0 +1,47 @@
+Maximum Sum Combination
+------------------------------------------------------------------------------------------------------------------------------------------
+Given two integer array A and B of size N each.
+A sum combination is made by adding one element from array A and another element of array B.
+Return the maximum K valid distinct sum combinations from all the possible sum combinations.
+
+Note : Output array must be sorted in non-increasing order.
+
+Example 1:
+Input:
+N = 4
+C = 3
+A [ ] = {1, 4, 2, 3}
+B [ ] = {2, 5, 1, 6}
+Output: {10, 9, 9}
+Explanation: 
+10 -> (A : 4) + (B : 6)
+9 -> (A : 4) + (B : 5)
+9 -> (A : 3) + (B : 6)
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N* log(N))
+SC : O(N)
+
+vector<int> maxCombinations(int n, int k, vector<int> &a, vector<int> &b) {
+	sort(a.begin(), a.end());
+	sort(b.begin(), b.end());
+	
+	priority_queue<pair<int, pair<int,int>>>pq;
+	for(int i = 0; i < n; i++) {
+		pq.push({a[i]+b[n-1], {i,n-1}});
+	}
+	vector<int>ans;
+	while(!pq.empty() && k--) {
+		auto it = pq.top();
+		pq.pop();
+		int value = it.first;
+		int idx1 = it.second.first;
+		int idx2 = it.second.second;
+		ans.push_back(value);
+		if(idx2 != 0) {
+			pq.push({a[idx1]+b[idx2-1], {idx1, idx2-1}});
+		}
+	}
+	return ans;
+}

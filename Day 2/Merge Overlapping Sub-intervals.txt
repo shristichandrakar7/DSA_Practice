@@ -1,0 +1,60 @@
+Merge Overlapping Sub-intervals
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given an array of intervals, merge all the overlapping intervals and return an array of non-overlapping intervals.
+
+Example 1: 
+
+Input: intervals=[[1,3],[2,6],[4,7],[8,10],[15,18]]
+
+Output: [[1,6],[8,10],[15,18]]
+
+Explanation: Since intervals [1,3] and [2,6] are overlapping we can merge them to form [1,6]
+ intervals.
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+ 
+TC :O(NlogN+2N)
+SC :O(1)
+
+vector<vector<int>> mergeOverlappingIntervals(vector<vector<int>> &arr) {
+	int n=arr.size();
+    sort(arr.begin(), arr.end());
+    vector<vector<int>> res;
+    for(int i=0; i<n; i++){
+        int a=arr[i][0];
+        int b=arr[i][1];
+        int j=i+1;
+        for(j; j<n; j++){
+            int c=arr[j][0];
+            int d=arr[j][1];
+            if(b>=c){
+                b=max(b,d);
+                i=j;
+            }
+        }
+        res.push_back({a,b});
+    }
+    return res;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+ 
+TC :O(NlogN+N)
+SC :O(1)
+
+vector<vector<int>> mergeOverlappingIntervals(vector<vector<int>> &arr) {
+	int n=arr.size();
+    sort(arr.begin(), arr.end());
+    vector<vector<int>> res;
+    for(int i=0; i<n; i++){
+		int a=arr[i][0];
+		int b=arr[i][1];
+		if(res.empty()|| a>res.back()[1]){
+			res.push_back({a,b});
+		}
+		else{
+			res.back()[1]=max(res.back()[1], b);
+		}
+    }
+    return res;
+}

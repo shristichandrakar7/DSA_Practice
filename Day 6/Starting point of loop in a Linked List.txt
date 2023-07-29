@@ -1,0 +1,50 @@
+Starting point of loop in a Linked List
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that the tail’s next pointer is connected to (0-indexed). It is -1 if there is no cycle. Note that pos is not passed as a parameter.
+
+Do not modify the linked list.
+
+Example 1:
+Input:
+ head = [1,2,3,4,3,6,10]
+Output:
+ tail connects to node index 2
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N)
+SC : O(N)
+
+ListNode *detectCycle(ListNode *head) {
+	unordered_set<ListNode*>st;
+	while(head) {
+		if(st.find(head) != st.end()) return head;
+		st.insert(head);
+		head = head -> next;
+	}
+	return NULL;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(N)
+SC : O(1)
+
+ListNode *detectCycle(ListNode *head) {
+	ListNode* slow = head, *fast = head;
+	while(fast && fast -> next) {
+		slow = slow -> next;
+		fast = fast -> next -> next;
+		if(fast == slow) {
+			ListNode* end = head;
+			while(end != slow) {
+				end = end -> next;
+				slow = slow -> next;
+			}
+			return slow;
+		}
+	}
+	return NULL;
+}

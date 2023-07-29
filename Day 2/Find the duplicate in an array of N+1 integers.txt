@@ -1,0 +1,77 @@
+Find the duplicate in an array of N+1 integers
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given an array of N + 1 size, where each element is between 1 and N. Assuming there is only one duplicate number, your task is to find the duplicate number.
+
+Example 1: 
+
+Input: arr=[1,3,4,2,2]
+Output: 2
+
+Example 2:
+
+Input: [3,1,3,4,2]
+Output:3
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(Nlog(N)+N)
+SC : O(1)
+
+int findDuplicate(vector < int > & arr) {
+	sort(arr.begin(), arr.end());
+	for(int i=0; i<arr.size()-1; i++){
+		if(arr[i]==arr[i+1]) return arr[i];
+	}
+	return -1;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2: Hashing
+
+TC : O(N)
+SC : O(N)
+
+int findDuplicate(vector < int > & arr) {
+	int n=arr.size();
+	vector<int> freq(n,0);
+	for(int i=0; i<n; i++){
+		freq[arr[i]]++;
+		if(freq[arr[i]]>1) return arr[i];
+	}
+	return -1;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 3: LinkedList Approach
+
+TC : O(N)
+SC : O(1)
+
+int findDuplicate(vector < int > & nums) {
+	int fast=nums[0], slow=nums[0];
+	do{
+		slow=nums[slow];
+		fast=nums[nums[fast]];
+	}while(fast!=slow);
+	fast=nums[0];
+	while(fast!=slow){
+		slow=nums[slow];
+		fast=nums[fast];
+	}
+	return slow;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 4: Applicable only if no. of repeated values is not more than 2
+
+ex - [2,2,2,2,2] in this case not applicable
+
+TC : O(N)
+SC : O(1)
+
+int findDuplicate(vector < int > & arr) {
+	int n=arr.size(), xori=0;
+	for(int i=1; i<n; i++){
+		xori^= i;
+		xori^=arr[i];
+	}
+	xori^=arr[0];
+	return xori;
+}

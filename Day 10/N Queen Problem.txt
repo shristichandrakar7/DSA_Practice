@@ -1,0 +1,100 @@
+N Queen Problem
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: The n-queens is the problem of placing n queens on n × n chessboard such that no two queens can attack each other. Given an integer n, return all distinct solutions to the n -queens puzzle. Each solution contains a distinct boards configuration of the queen’s placement, where ‘Q’ and ‘.’ indicate queen and empty space respectively.
+
+Examples:
+Input: n = 4
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N!*N)
+SC : O(N*N)
+
+bool isPossible(int col, int row, vector<string>& ds, int n){
+	int duprow=row;
+	int dupcol=col;
+	//lower diagonal
+	while(row<n && col>=0){
+		if(ds[row][col]=='Q') return false;
+		row++;
+		col--;
+	}
+	
+	//upper diagonal
+	row=duprow; col=dupcol;
+	while(row>=0 && col>=0){
+		if(ds[row][col]=='Q') return false;
+		row--;
+		col--;
+	}
+	
+	//left
+	row=duprow; col=dupcol;
+	while(col>=0){
+		if(ds[row][col]=='Q') return false;
+		col--;
+	}
+	return true;
+}
+void f(int col, int n, vector<string>& ds, vector<vector<string>>& ans){
+	if(col==n){
+		ans.push_back(ds);
+		return;
+	}
+	
+	for(int row=0; row<n; row++){
+		if(isPossible(col,row,ds,n)){
+			ds[row][col]='Q';
+			f(col+1,n,ds,ans);
+			ds[row][col]='.';
+		}
+	}
+}
+vector<vector<string>> solveNQueens(int n) {
+	vector<vector<string>> ans;
+	string s(n,'.');
+	vector<string> ds(n);
+	for(int i=0; i<n;i++){
+		ds[i]=s;
+	}
+	f(0,n,ds,ans);
+	return ans;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(N!*N)
+SC : O(N)
+
+void f(int col, int n, vector<string>& ds, vector<vector<string>>& ans, vector<int>& lowerdiagonal, vector<int>& upperdiagonal, vector<int>& left){
+	if(col==n){
+		ans.push_back(ds);
+		return;
+	}
+	
+	for(int row=0; row<n; row++){
+		if(left[row]==0 && lowerdiagonal[row+col]==0 && upperdiagonal[n-1-(row-col)]==0){
+			upperdiagonal[n-1-(row-col)]=1;
+			lowerdiagonal[row+col]=1;
+			left[row]=1;
+			ds[row][col]='Q';
+			f(col+1,n,ds,ans, lowerdiagonal, upperdiagonal, left);
+			upperdiagonal[n-1-(row-col)]=0;
+			lowerdiagonal[row+col]=0;
+			left[row]=0;
+			ds[row][col]='.';
+		}
+	}
+}
+vector<vector<string>> solveNQueens(int n) {
+	vector<vector<string>> ans;
+	string s(n,'.');
+	vector<string> ds(n);
+	for(int i=0; i<n;i++){
+		ds[i]=s;
+	}
+	vector<int> lowerdiagonal(2*n-1,0), upperdiagonal(2*n-1,0), left(n,0);
+	f(0,n,ds,ans, lowerdiagonal, upperdiagonal, left);
+	return ans;
+}

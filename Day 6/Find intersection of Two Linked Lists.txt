@@ -1,0 +1,103 @@
+Find intersection of Two Linked Lists
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. If the two linked lists have no intersection at all, return null.
+
+Example 1:
+Input:
+List 1 = [1,3,1,2,4], List 2 = [3,2,4]
+Output: 2
+
+Example 2:
+Input:
+List1 = [1,2,7], List 2 = [2,8,1]
+Output: Null
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(m*n)
+SC : O(1)
+
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+	while(headA){
+		ListNode* a=headB; 
+		while(a){
+			if(headA==a) return a;
+			a=a->next;
+		}
+		headA=headA->next;
+	}
+	return NULL;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(m+n)
+SC : O(m)
+
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+	unordered_set<ListNode*> m;
+	while(headA){
+		m.insert(headA);
+		headA=headA->next;
+	}
+	while(headB){
+		if(m.find(headB)!=m.end()) return headB;
+		headB=headB->next;
+	}
+	return NULL;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 3:
+
+TC : O(max(m,n))+O(abs(m-n))+O(min(m,n))
+SC : O(1)
+
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+	ListNode*a=headA, *b=headB;
+	int l1=0, l2=0;
+	while(a || b){
+		if(a) {
+			++l1;
+			a=a->next;
+		}
+		if(b) {
+			++l2;
+			b = b->next;
+		}
+	}
+	a=headA;
+	b=headB;
+	int len=abs(l1-l2);
+	if(l1>l2){
+		while(len--){
+			a=a->next;
+		}
+	}else{
+		while(len--){
+			b=b->next;
+		}
+	}
+	while(a){
+		if(a==b) return a;
+		a=a->next;
+		b=b->next;
+	}
+	return NULL;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 4:
+
+TC : O(2*max(m,n))
+SC : O(1)
+
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+	ListNode*a=headA, *b=headB;
+	while(a!=b){
+		a = a->next;
+		b = b->next;
+		if(a == NULL && b==NULL) return NULL;
+		if(a == NULL) a = headB;
+		if(b==NULL) b=headA;
+	}
+	return a;
+}
