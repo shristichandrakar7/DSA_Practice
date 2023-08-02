@@ -1,0 +1,51 @@
+Implement Stack using single Queue
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Implement a Stack using a single Queue.
+
+Note: Stack is a data structure that follows the Last In First Out (LIFO) rule.
+Note: Queue is a data structure that follows the First In First Out (FIFO) rule.
+
+Explanation:
+push(): Insert the element in the stack.
+pop(): Remove and return the topmost element of the stack.
+top(): Return the topmost element of the stack
+size(): Return the size of the stack
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC: O(N)
+SC: O(N)
+
+class MyStack {
+    queue<int>q;
+public:
+    MyStack() {
+    
+    }
+    
+    void push(int x) {
+        int sz = q.size();
+        q.push(x);
+        for(int i = 0; i < sz; i++) {
+            q.push(q.front());
+            q.pop();
+        }
+    }
+    
+    int pop() {
+        if(q.size() == 0) return -1;
+        int x = q.front();
+        q.pop();
+        return x;
+    }
+    
+    int top() {
+        if(q.size() == 0) return -1;
+        return q.front();
+    }
+    
+    bool empty() {
+        if(q.size() == 0) return 1;
+        return 0;
+    }
+};

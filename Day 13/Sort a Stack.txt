@@ -1,0 +1,30 @@
+Sort a Stack
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement:You’re given a stack consisting of 'N' integers. Your task is to sort this stack in descending order using recursion.
+
+Example :
+Input : [3,-7,9,-2,5]
+output: [9,5,3,-2,-7]
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC: O(N*N)
+SC: O(N)
+
+void helper(stack<int> &st, int ele){
+	if(st.empty() || (!st.empty() && st.top()<ele) ){
+		st.push(ele);
+		return;
+	}
+	int temp=st.top();
+	st.pop();
+	helper(st,ele);
+	st.push(temp);
+}
+void sortStack(stack<int> &st){
+	if(st.empty()) return;
+	int ele = st.top();
+	st.pop();
+	sortStack(st);
+	helper(st,ele);
+}
