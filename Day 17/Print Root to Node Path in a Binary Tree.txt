@@ -1,0 +1,35 @@
+Print Root to Node Path in a Binary Tree
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Print Root to Node Path In A Binary Tree. Write a program to print path from root to a given node in a binary tree.
+
+Problem Description: 
+We are given a binary tree T and a node V. We need to print a path from the root of the tree to the node.
+Note:
+No two nodes in the tree have the same data value.
+It is assured that the node V is present and a path always exists.
+
+Example:
+Input: [1,2,3,4,5,NULL,NULL,NULL,NULL,6,7]    x=7
+					1
+				   / \
+				  2   3
+				 / \
+				4	5
+				   / \
+				  6   7
+Output:[1,2,5,7]
+------------------------------------------------------------------------------------------------------------------------------------------
+bool f(node* root, int x, vector<int>& ans) {
+	if(root == NULL) return false;
+	ans.push_back(root->val);
+	if(root->val==x) return true;
+	if(f(root->left,x,ans) || (root->right,x,ans)) return true;
+	ans.pop_back();
+	return false;
+}
+vector<int> getPath(node * root, int x) {
+	vector<int>ans;
+	if(root == NULL) return ans;
+	if(f(root, x, ans)) return ans;
+	return ans;
+}

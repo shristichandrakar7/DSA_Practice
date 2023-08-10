@@ -1,0 +1,34 @@
+// https://www.algoexpert.io/questions/Three%20Number%20Sum
+
+// Using one for loop and then a while loop for left and right pointers
+
+// Time : O(n^2) | Space : O(n)
+
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<vector<int>> threeNumberSum(vector<int> array, int targetSum) {
+  // Write your code here.
+	sort(array.begin() , array.end());
+	vector<vector<int>> triplet;
+	for(int i = 0; i < array.size() - 2; i++) {
+		int left = i+1;
+		int right = array.size() - 1;
+		while(left < right) {
+			int currentSum = array[i] + array[left] + array[right];
+			if(currentSum == targetSum) {
+				triplet.push_back({array[i], array[left], array[right]});
+				left++;
+				right--;
+			}
+			else if(currentSum < targetSum) {
+				left++;
+			}
+			else if(currentSum > targetSum) {
+				right--;
+			}
+		}
+	}
+  return triplet;
+}

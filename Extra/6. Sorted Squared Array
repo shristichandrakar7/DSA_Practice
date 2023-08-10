@@ -1,0 +1,27 @@
+// https://www.algoexpert.io/questions/Sorted%20Squared%20Array
+
+// Time: O(n) | Space: O(n)
+
+#include <vector>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+vector<int> sortedSquaredArray(vector<int> array) {
+  // Write your code here.
+	vector<int>outputArray(array.size(),0);
+	int idxStart = 0, idxEnd = array.size()-1;
+	for(int i = array.size()-1; i >= 0; i--) {
+		int leftNum = array[idxStart];
+		int rightNum = array[idxEnd];
+		if(abs(leftNum) > abs(rightNum)) {
+			outputArray[i] = leftNum * leftNum;
+			idxStart++;
+		}
+		else {
+			outputArray[i] = rightNum * rightNum;
+			idxEnd--;
+		}
+	}
+  return outputArray;
+}

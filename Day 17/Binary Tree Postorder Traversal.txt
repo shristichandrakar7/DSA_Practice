@@ -1,0 +1,92 @@
+Binary Tree Postorder Traversal
+------------------------------------------------------------------------------------------------------------------------------------------
+Given the root of a binary tree, return the postorder traversal of its nodes' values.
+
+Example 1:
+Input: root = [1,null,2,3]
+Output: [3,2,1]
+
+Example 2:
+Input: root = []
+Output: []
+
+Example 3:
+Input: root = [1]
+Output: [1]
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1: Recursion
+
+TC:O(N)
+SC:O(H)
+
+void f(TreeNode* root, vector<int>&ans) {
+	if(root == NULL) return;
+	f(root -> left, ans);
+	f(root -> right, ans);
+	ans.push_back(root -> val, ans);
+}
+
+vector<int> postorderTraversal(TreeNode* root) {
+	vector<int>ans;
+	f(root, ans);
+	return ans;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2: Using 2 stack
+
+TC:O(N)
+SC:O(2N)
+
+vector<int> postorderTraversal(TreeNode* root) {
+	vector<int>ans;
+	if(root == NULL) return ans;
+	stack<TreeNode*>st1, st2;
+	st1.push(root);
+	while(!st1.empty()) {
+		TreeNode* node = st1.top();
+		st2.push(node);
+		st1.pop();
+		if(node -> left) st1.push(node -> left);
+		if(node -> right) st1.push(node -> right);
+	}
+	while(!st2.empty()) {
+		ans.push_back(st2.top() -> val);
+		st2.pop();
+	}
+	return ans;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 3: Using 1 stack
+
+TC:O(N)
+SC:O(N)
+
+vector<int> postorderTraversal(TreeNode* root) {
+	vector<int>ans;
+	if(root == NULL) return ans;
+	stack<TreeNode*>st;
+	TreeNode* cur = root;
+	while(cur || !st.empty()) {
+		if(cur) {
+			st.push(cur);
+			cur = cur -> left;		
+		}
+		else {
+			TreeNode* temp = st.top() -> right;
+			if(temp == NULL) {
+				temp = st.top();
+				ans.push_back(temp -> val);
+				st.pop();
+				while(!st.empty() && temp == st.top() -> right) {
+					ans.push_back(st.top() -> val);
+					temp = st.top();
+					st.pop();
+				}
+			}
+			else {
+				cur = temp;
+			}
+		}
+	}
+	return ans;
+}

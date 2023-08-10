@@ -1,0 +1,64 @@
+Rotten Oranges : Min time to rot all oranges : BFS
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: You will be given an m x n grid, where each cell has the following values : 
+
+2  –  represents a rotten orange
+1  –  represents a Fresh orange
+0  –  represents an Empty Cell
+Every minute, if a Fresh Orange is adjacent to a Rotten Orange in 4-direction ( upward, downwards, right, and left ) it becomes Rotten. 
+
+Return the minimum number of minutes required such that none of the cells has a Fresh Orange. If it’s not possible, return -1.
+
+Example 1:
+Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
+Output: 4
+
+Example 2:
+Input: grid = [[2,1,1],[0,1,1],[1,0,1]]
+Output: -1
+Explanation: The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC: O(N*M*4)
+SC: O(N*M)
+
+int orangesRotting(vector<vector<int>>& grid) {
+	int n = grid.size();
+	int m = grid[0].size();
+	if(grid.empty()) return 0;
+	queue<pair<pair<int,int>,int>> q;
+	vector<vector<int>> vis(n, vector<int>(m,0));
+	int cntFr=0;
+	for(int i=0; i<n; i++){
+		for(int j=0; j<m; j++){
+			if(grid[i][j]==2){
+			vis[i][j]=1;
+			q.push({{i,j},0});
+			}else if(grid[i][j] == 0) vis[i][j]=1;
+			if(grid[i][j]==1) cntFr++;
+		}
+	} 
+	int tm=0;
+	int dr[]={-1,0,1,0};
+	int dc[]={0,1,0,-1};
+	int cnt=0;
+	while(!q.empty()){
+		int r=q.front().first.first;
+		int c=q.front().first.second;
+		int t=q.front().second;
+		tm=max(t,tm);
+		q.pop();
+		for(int i=0; i<4; i++){
+			int nr=r+dr[i];
+			int nc=c+dc[i];
+			if(nr>=0 && nr<n && nc>=0 && nc<m && vis[nr][nc]==0 && grid[nr][nc]==1){
+				q.push({{nr,nc},t+1});
+				cnt++;
+				vis[nr][nc]=1;
+			}
+		}
+	}
+	if(cntFr==cnt) return tm;
+	return -1;
+}

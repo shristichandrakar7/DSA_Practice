@@ -1,0 +1,78 @@
+Minimum characters to be added at front to make string palindrome
+------------------------------------------------------------------------------------------------------------------------------------------
+Given string str of length N. The task is to find the minimum characters to be added at the front to make string palindrome.
+Note: A palindrome is a word which reads the same backward as forward. Example: "madam".
+
+Example 1:
+
+Input:
+S = "abc"
+Output: 2
+Explanation: 
+Add 'b' and 'c' at front of above string to make it
+palindrome : "cbabc"
+
+Example 2:
+Input:
+S = "aacecaaa"
+Output: 1
+Explanation: Add 'a' at front of above string
+to make it palindrome : "aaacecaaa"
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N*N)
+SC : O(1)
+
+int minChar(string str){
+	int n = str.size();
+	int i = 0, j = n-1, k = n-1;
+	while(j >= i) {
+		if(str[i] == str[j]) {
+			i++;
+			j--;
+		}
+		else {
+			i = 0;
+			k--;
+			j = k;
+		}
+	}
+	return n - 1 - k;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(N)
+SC : O(N)
+
+void createLPS(string pattern, int pi[]) {
+	int len = 0;
+	pi[0] = 0;
+	int i = 1;
+	while(i < pattern.size()) {
+		if(pattern[i] == pattern[len]) {
+			len++;
+			pi[i] = len;
+			i++;
+		}
+		else {
+			if(len == 0) {
+				pi[i] = len;
+				i++;
+			}
+			else {
+				len = pi[len-1];
+			}
+		}
+	}
+}
+int minCharsforPalindrome(string str) {
+	int n = str.size();
+	string s = str;
+	reverse(s.begin(), s.end());
+	str = str + s;
+	int pi[2*n];
+	createLPS(str, pi);
+	return n - pi[2*n-1];
+}

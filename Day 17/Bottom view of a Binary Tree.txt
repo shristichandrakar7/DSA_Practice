@@ -1,0 +1,47 @@
+Bottom view of a Binary Tree
+------------------------------------------------------------------------------------------------------------------------------------------
+Problem Statement: Given a binary tree, print the bottom view from left to right. A node is included in the bottom view if it can be seen when we look at the tree from the bottom.
+
+Example 1:
+Input:
+       1
+     /   \
+    3     2
+Output: 3 1 2
+Explanation:
+First case represents a tree with 3 nodes and 2 edges where root is 1, left child of 1 is 3 and right child of 1 is 2.
+Thus nodes of the binary tree will be printed as such 3 1 2.
+
+Example 2:
+Input:
+         10
+       /    \
+      20    30
+     /  \
+    40   60
+Output: 40 20 60 30
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC: O(N)
+SC: O(N)
+
+vector<int> bottomView(Node *root) {
+    vector<int>ans;
+	if(root == NULL) return ans;
+	map<int,int>mp;
+	queue<pair<Node*, int>>q;
+	q.push({root, 0});
+	while(!q.empty()) {
+		Node* temp = q.front().first;
+		int level = q.front().second;
+		q.pop();
+		mp[level] = temp -> data;
+		if(temp -> left) q.push({temp -> left, level-1});
+		if(temp -> right) q.push({temp -> right, level+1});
+	}
+	for(auto it : mp) {
+		ans.push_back(it.second);
+	}
+	return ans;
+}

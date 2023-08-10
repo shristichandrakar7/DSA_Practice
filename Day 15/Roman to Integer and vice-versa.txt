@@ -1,0 +1,53 @@
+Roman to Integer
+------------------------------------------------------------------------------------------------------------------------------------------
+Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+Example 1:
+Input: s = "MCMXCIV"
+Output: 1994
+Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC: O(N)
+SC: O(N)
+
+int romanToInt(string s) {
+	unordered_map<char,int> m={{'I',1},
+								{'V',5},
+								{'X',10},
+								{'L',50},
+								{'C',100},
+								{'D',500},
+								{'M',1000}};
+	int i=0, sum=0;
+	while(i<s.size()-1){
+		if(m[s[i]]<m[s[i+1]]) sum-=m[s[i]];
+		else sum+=m[s[i]]; 
+		++i;
+	}
+	sum+=m[s[i]]; 
+	return sum;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Integer to Roman
+------------------------------------------------------------------------------------------------------------------------------------------
+Example 1:
+
+Input: num = 1994
+Output: "MCMXCIV"
+Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC:O(1)
+SC:O(1)
+
+string intToRoman(int num) {
+	string ones[] = {"","I","II","III","IV","V","VI","VII","VIII","IX"};
+	string tens[] = {"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"};
+	string hundreds[] = {"","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"};
+	string thousands[]={"","M","MM","MMM"};
+
+	return (thousands[(num/1000)]+hundreds[(num%1000)/100]+tens[(num%100)/10]+ones[(num%10)]); 
+}
