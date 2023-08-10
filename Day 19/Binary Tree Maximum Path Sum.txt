@@ -1,0 +1,51 @@
+Binary Tree Maximum Path Sum
+------------------------------------------------------------------------------------------------------------------------------------------
+A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.
+
+The path sum of a path is the sum of the node's values in the path.
+
+Given the root of a binary tree, return the maximum path sum of any non-empty path.
+
+Example 1:
+
+Input:
+     10
+    /  \
+   2   -25
+  / \  /  \
+ 20 1  3  4
+Output: 32
+Explanation: Path in the given tree goes like 10 , 2 , 20 which gives the max sum as 32.
+
+Example 2:
+
+Input:
+     10
+   /    \
+  2      5
+          \
+          -2
+Output: 17
+Explanation: Path in the given tree goes like 2 , 10 , 5 which gives the max sum as 17.
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N)
+SC : O(N)
+
+int f(TreeNode* root, int &maxi) {
+	if(root == NULL) return 0;
+	
+	int left = max(0, f(root -> left, maxi));
+	int right = max(0, f(root -> right, maxi));
+	
+	maxi = max(maxi, root -> val + left + right);
+	return root -> val + max(left, right);
+}
+
+int maxPathSum(TreeNode* root) {
+	if(root == NULL) return 0;
+	int maxi = INT_MIN;
+	f(root, maxi);
+	return maxi;
+}

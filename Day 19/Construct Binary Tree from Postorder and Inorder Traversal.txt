@@ -1,0 +1,43 @@
+Construct Binary Tree from Postorder and Inorder Traversal
+------------------------------------------------------------------------------------------------------------------------------------------
+Given two integer arrays inorder and postorder where inorder is the inorder traversal of a binary tree and postorder is the postorder traversal of the same tree, construct and return the binary tree.
+
+Example 1:
+
+Input:
+N = 8
+in[] = 4 8 2 5 1 6 3 7
+post[] =8 4 5 2 6 7 3 1
+Output: 1 2 4 8 5 3 6 7
+Explanation: For the given postorder and
+inorder traversal of tree the  resultant
+binary tree will be
+           1
+       /      \
+     2         3
+   /  \      /  \
+  4    5    6    7
+   \
+     8
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N)
+SC : O(N)
+
+TreeNode* f(vector<int>& postorder, int postStart, int postEnd, vector<int>& inorder, int inStart, int inEnd, map<int, int>& mp) {
+	if(inStart>inEnd || postStart > postEnd) return NULL;
+	TreeNode* node = new TreeNode(postorder[postEnd]);
+	int index = mp[postorder[postEnd]];
+	int right = inEnd-index;
+	node -> left = f(postorder, postStart, postEnd - right - 1, inorder, inStart, index-1, mp);
+	node -> right = f(postorder, postEnd-right, postEnd-1, inorder, index+1, inEnd, mp);
+	return node;   
+}
+
+TreeNode* buildTree(vector<int>& inorder, vector<int>&postorder) {
+	map<int, int>mp; //{val, index} of inorder
+	for(int i = 0; i < inorder.size(); i++) mp[inorder[i]] = i;
+	TreeNode* root = f(postorder, 0, postorder.size()-1, inorder, 0, inorder.size()-1, mp);
+	return root;
+}

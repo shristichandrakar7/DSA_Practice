@@ -1,0 +1,112 @@
+Flatten Binary Tree to Linked List
+------------------------------------------------------------------------------------------------------------------------------------------
+Given the root of a binary tree, flatten the tree into a "linked list":
+
+The "linked list" should use the same Node class where the right child pointer points to the next   node in the list and the left child pointer is always null.
+The "linked list" should be in the same order as a pre-order traversal of the binary tree.
+
+Example 1:
+Input : 
+          1
+        /   \
+       2     5
+      / \     \
+     3   4     6
+Output :
+1 2 3 4 5 6 
+Explanation: After flattening, the tree looks like this
+    1
+     \
+      2
+       \
+        3
+         \
+          4
+           \
+            5
+             \
+              6 
+Here, left of each node points to NULL and right contains the next node in preorder.The inorder traversal of this flattened tree is
+1 2 3 4 5 6.
+
+Example 2:
+Input :
+        1
+       / \
+      3   4
+         /
+        2
+         \
+          5 
+Output : 
+1 3 4 2 5  
+Explanation : After flattening, the tree looks like this 
+     1
+      \
+       3
+        \
+         4
+          \
+           2
+            \ 
+             5 
+Here, left of each node points to NULL and right contains the next node in preorder.The inorder traversal of this flattened tree 
+is 1 3 4 2 5.
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1: Recursive
+
+TC : O(N)
+SC : O(N)
+
+TreeNode* prev = NULL;
+void flatten(TreeNode* root) {
+	if(root == NULL) return;
+	flatten(root -> right);
+	flatten(root -> left);
+	
+	root -> right = prev;
+	prev = root;
+	root -> left = NULL;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2: Using Stack
+
+TC : O(N)
+SC : O(N)
+
+void flatten(TreeNode* root) {
+	if(root == NULL) return;
+	stack<TreeNode*>st;
+	st.push(root);
+	while(!st.empty()) {
+		TreeNode* cur = st.top();
+		st.pop();
+		if(cur -> right) st.push(cur -> right);
+		if(cur -> left) st.push(cur -> left);
+		if(!st.empty()) cur -> right = st.top();
+		cur -> left = NULL;
+	}
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 3: Using Morris
+
+TC : O(N)
+SC : O(1)
+
+void flatten(TreeNode* root) {
+	if(root == NULL) return;
+	TreeNode* cur = root;
+	TreeNode* prev = NULL;
+	while(cur) {
+		if(cur -> left) {
+			prev = cur -> left;
+			while(prev -> right) {
+				prev = prev -> right;
+			}
+			prev -> right = cur -> right;
+			cur -> right = cur -> left;
+			cur -> left = NULL;
+		}
+		cur = cur -> right;
+	}
+}
