@@ -1,0 +1,118 @@
+Maximum Sum BST in Binary Tree
+------------------------------------------------------------------------------------------------------------------------------------------
+Given a binary tree root, return the maximum sum of all keys of any sub-tree which is also a Binary Search Tree (BST).
+
+Assume a BST is defined as follows:
+1. The left subtree of a node contains only nodes with keys less than the node's key.
+2. The right subtree of a node contains only nodes with keys greater than the node's key.
+3. Both the left and right subtrees must also be binary search trees.
+
+Example 1:
+		  1
+	   /    \
+	  4      3
+	 / \    / \
+	2   4  2   5
+	          / \
+			 4   6
+Input: root = [1,4,3,2,4,2,5,null,null,null,null,null,null,4,6]
+Output: 20
+Explanation: Maximum sum in a valid Binary search tree is obtained in root node with key equal to 3.
+
+Example 2:
+		4
+	   / 
+	  3  
+	 /  \
+    1    2
+Input: root = [4,3,null,1,2]
+Output: 2
+Explanation: Maximum sum in a valid Binary search tree is obtained in a single root node with key equal to 2.
+
+Example 3:
+Input: root = [-4,-2,-5]
+Output: 0
+Explanation: All values are negatives. Return an empty BST.
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N)
+SC : O(N)
+
+class Solution {
+private:
+	int sum = 0;
+public:
+	int calculateSum(TreeNode* root) {
+		if(root == NULL) return 0;
+		int curSum = 0;
+		queue<TreeNode*>q;
+		q.push(root);
+		while(!q.empty()) {
+			TreeNode* cur = q.front();
+			q.pop();
+			curSum += cur->val;
+			if(cur -> left) q.push(cur -> left);
+			if(cur -> right) q.push(cur -> right);
+		}
+		return curSum;
+	}
+    bool isValidBST(TreeNode* root, long mini, long maxi) {
+		if(root == NULL) return true;
+		if(root -> val <= mini || root -> val >= maxi) return false;
+		
+		return isValidBST(root -> left, mini, root -> val) && isValidBST(root -> right, root -> val, maxi);
+	}
+	void traverse(TreeNode* root) {
+		if(isValidBST(root, LONG_MIN, LONG_MAX)) {
+			sum  = max(sum, calculateSum(root));
+		}
+		if(root -> left)traverse(root -> left);
+		if(root -> right)traverse(root -> right);
+	}
+	int maxSumBST(TreeNode* root) {
+		traverse(root);
+		return sum;
+	}
+};
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(N)
+SC : O(N)
+
+class nodeVal {
+public:
+	int maxVal, minVal, maxSum; 
+	nodeVal(int maxVal, int minVal, int maxSum) {
+		this -> maxVal = maxVal;
+		this -> minVal = minVal;
+		this -> maxSum = maxSum;
+	}
+};
+
+class Solution {
+public:
+	int sum = 0;
+	
+	nodeVal BST(TreeNode* root) {
+		if(!root) return nodeVal(INT_MIN, INT_MAX, 0);
+		
+		auto left = BST(root -> left);
+		auto right = BST(root -> right);
+		
+		if(root -> val > left.maxVal && root -> val < right.minVal) {
+			// Valid BST
+			sum = max(sum, root -> val + left.maxSum + right.maxSum);
+			return nodeVal(max(root -> val, right.maxVal), min(root -> val, left.minVal),
+				   root -> val + left.maxSum + right.maxSum);
+		}
+		return nodeVal(INT_MAX, INT_MIN, max(left.maxSum, right.maxSum));
+	}
+	
+	int maxSumBST(TreeNode* root) {
+		if(root == NULL) return 0;
+		BST(root);
+		return sum == 0 ? 0 : sum;
+	}
+};
