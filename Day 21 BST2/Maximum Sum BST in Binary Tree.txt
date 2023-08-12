@@ -36,7 +36,7 @@ Explanation: All values are negatives. Return an empty BST.
 ------------------------------------------------------------------------------------------------------------------------------------------
 Approach 1:
 
-TC : O(N)
+TC : O(N*N)
 SC : O(N)
 
 class Solution {
