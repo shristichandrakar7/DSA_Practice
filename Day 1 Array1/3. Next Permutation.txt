@@ -16,6 +16,11 @@ Input format: Arr[] = {3,2,1}
 Output: Arr[] = {1,2,3}
 Explanation: As we see all permutations of {1,2,3}, we find {3,2,1} at the last position. So, we have to return the topmost permutation.
 ----------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N!xN)
+SC : O(n*n)
+
 private:
     void permute(int p, vector<int> &arr, vector<vector<int>> &res){
         if(p==arr.size()-1) res.push_back(arr);
@@ -45,11 +50,18 @@ public:
     }
 
 ----------------------------------------------------------------------------------------------------------------------------------------
+Approach 2 :
+
 void nextPermutation(vector<int>& arr) {
 	next_permutation(arr.begin(),arr.end());
 }
 
 ----------------------------------------------------------------------------------------------------------------------------------------
+Approach 3:
+
+TC : O(3N)
+SC : O(1)
+
 void nextPermutation(vector<int>& arr) {
 	int k;
 	for(k=n-2; k>=0; k--){

@@ -7,6 +7,11 @@ Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
 Output: 6
 Explanation: The subarray [4,-1,2,1] has the largest sum 6.
 -----------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(N^3)
+SC : O(1)
+
 int maxSubArray(vector<int>& nums) {
 	int n = nums.size();
 	int maxi = INT_MIN;
@@ -22,6 +27,11 @@ int maxSubArray(vector<int>& nums) {
 	return maxi;
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
+Approach 2:
+
+TC : O(N^2)
+SC : O(1)
+
 int maxSubArray(vector<int>& nums) {
 	int n = nums.size();
 	int maxi = INT_MIN;
@@ -35,6 +45,11 @@ int maxSubArray(vector<int>& nums) {
 	return maxi;
 }
 -----------------------------------------------------------------------------------------------------------------------------------------
+Approach 3:
+
+TC : O(N)
+SC : O(1)
+
 int maxSubArray(vector<int>& nums) {
 	int n = nums.size();
 	int maxi = INT_MIN;
@@ -52,6 +67,12 @@ int maxSubArray(vector<int>& nums) {
 -----------------------------------------------------------------------------------------------------------------------------------------
 Problem Statement: Given an integer array arr, print the contiguous subarray (containing at least one number) which
 has the largest sum and returns its sum and prints the subarray
+
+
+Approach 1:
+
+TC : O(n)
+SC : O(1)
 
 vector<int> maxSubArray(vector<int>& nums) {
 	int n = nums.size();
