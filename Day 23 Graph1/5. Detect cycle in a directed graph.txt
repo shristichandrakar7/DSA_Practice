@@ -1,0 +1,70 @@
+Detect cycle in a directed graph
+------------------------------------------------------------------------------------------------------------------------------------------
+Given a Directed Graph with V vertices (Numbered from 0 to V-1) and E edges, check whether it contains any cycle or not.
+
+Example 1:
+Input: [[1], [2], [3], [3]]
+Output: 1
+Explanation: 3 -> 3 is a cycle
+
+Example 2:
+Input: [[1],[2]]
+Output: 0
+Explanation: no cycle in the graph
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1: BFS (Kahn's Algorithm)
+
+TC : O(V + E)
+SC : O(V)
+
+bool isCyclic(int V, vector<int> adj[]) {
+	vector<int>inDegree(V,0);
+	for(int i = 0; i < V; i++) {
+		for(auto it: adj[i])
+			inDegree[it]++;
+	}
+	queue<int>q;
+	for(int i = 0; i < V; i++) {
+		if(inDegree[i] == 0) q.push(i);
+	}
+	while(!q.empty()) {
+		int node = q.front();
+		q.pop();
+		for(auto it : adj[node]) {
+			inDegree[it]--;
+			if(inDegree[it] == 0) q.push(it);
+		}
+	}
+	for(int i = 0; i <V; i++) {
+		if(inDegree[i] != 0) return true;
+	}
+	return false;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1: DFS (Topo Sort Algorithm)
+
+TC : O(V + E)
+SC : O(V)
+
+bool dfs(int node, vector<int>& vis, vector<int>& path, vector<int> adj[]) {
+	vis[node] = 1;
+	path[node] = 1;
+	for(auto it : adj[node]) {
+		if(!vis[it]) {
+			if(dfs(it, vis, path, adj)) return true;
+		}
+		else if(path[it] == 1) return true;
+	}
+	path[node] = 0;
+	return false;
+}
+
+bool isCyclic(int V, vector<int> adj[]) {
+	vector<int>vis(V, 0), path(V, 0);
+	for(int i = 0; i < V; i++) {
+		if(!vis[i]) {
+			if(dfs(i, vis, path, adj)) return true;
+		}
+	}
+	return false;
+}
