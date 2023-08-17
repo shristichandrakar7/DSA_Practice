@@ -14,8 +14,8 @@ Output :
 ------------------------------------------------------------------------------------------------------------------------------------------
 Approach 1:
 
-// Time : O(n log n)
-// Space : O(n)
+TC : O(n log n)
+SC : O(n)
 
 int maximumActivities(vector<int> &start, vector<int> &finish) {
     int n = start.size();
