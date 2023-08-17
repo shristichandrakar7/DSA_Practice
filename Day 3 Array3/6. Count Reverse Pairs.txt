@@ -28,19 +28,19 @@ TC : O(n log n)
 SC : O(n)
 
 int merge(vector<int>& nums, int low, int mid, int high){
-	int j=mid+1, cnt=0;											
-	for(int i=low; i<=mid; i++){									
+	int j=mid, cnt=0;											
+	for(int i=low; i<mid; i++){									
 		while(j<=high && nums[i]>(long long int)2*nums[j]) j++;
-		cnt+=(j-(mid+1));
+		cnt+=(j-mid);
 	}
 	int i=low;
-	j=mid+1;
+	j=mid;
 	vector<int> temp;
-	while(i<=mid && j<=high){
+	while(i<mid && j<=high){
 		if(nums[i]<=nums[j]) temp.push_back(nums[i++]);
 		else temp.push_back(nums[j++]);
 	}
-	while(i<=mid) temp.push_back(nums[i++]);
+	while(i<mid) temp.push_back(nums[i++]);
 	while(j<=high) temp.push_back(nums[j++]);
 	for(int k=low; k<=high; k++){
 		nums[k]=temp[k-low];
@@ -53,7 +53,7 @@ int mergeSort(vector<int>& nums, int low, int high) {
 	int mid = low + (high-low)/2;
 	cnt += mergeSort(nums, low, mid);
 	cnt += mergeSort(nums, mid+1, high);
-	cnt += merge(nums, low, mid, high);
+	cnt += merge(nums, low, mid+1, high);
 	return cnt;
 }
 
@@ -61,4 +61,3 @@ int reversePairs(vector<int>& nums) {
 	int n = nums.size();
 	return mergeSort(nums, 0, n-1);
 }
-
