@@ -10,6 +10,7 @@ Approach 1:
 
 TC : O(2^(n) + 2^(n)log(2^(n)))
 SC : O(2^n) 
+
 void f(int i, vector<int>& arr, int n, vector<int>& ans, int sum){
 	if(i==n){
 		ans.push_back(sum);
