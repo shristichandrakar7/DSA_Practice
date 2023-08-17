@@ -16,7 +16,6 @@ void f(int i, vector<int>& arr, int n, vector<int>& ans, int sum){
 		ans.push_back(sum);
 		return;
 	}
-	
 	f(i+1, arr,n, ans,sum+arr[i]);
 	f(i+1,arr,n,ans,sum);
 }
