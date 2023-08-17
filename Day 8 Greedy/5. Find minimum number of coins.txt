@@ -4,7 +4,7 @@ Problem Statement: Given a value V, if we want to make a change for V Rs, and we
 
 Example 1:
 Input: V = 70
-Output: 2
+Output: 50 20
 ------------------------------------------------------------------------------------------------------------------------------------------
 Approach 1:
 
@@ -29,13 +29,11 @@ Given a value V and array coins[] of size M, the task is to make the change for 
 
 Input: V = 30, M = 3, coins[] = {25, 10, 5}
 Output: 2
-Explanation: Use one 25 cent coin
-and one 5 cent coin
+Explanation: Use one 25 cent coin and one 5 cent coin
 
 Input: V = 11, M = 4,coins[] = {9, 6, 5, 1} 
 Output: 2 
-Explanation: Use one 6 cent coin
-and one 5 cent coin
+Explanation: Use one 6 cent coin and one 5 cent coin
 ------------------------------------------------------------------------------------------------------------------------------------------
 Approach 1:
 

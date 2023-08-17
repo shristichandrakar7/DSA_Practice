@@ -1,6 +1,12 @@
 Fractional Knapsack Problem
 ------------------------------------------------------------------------------------------------------------------------------------------
 Problem Statement: The weight of N items and their corresponding values are given. We have to put these items in a knapsack of weight W such that the total value obtained is maximized.
+Note: Unlike 0/1 knapsack, you are allowed to break the item. 
+Given:
+struct Item{
+    int value;
+    int weight;
+};
 
 Example:
 Input: N = 3, W = 50, values[] = {100,60,120}, weight[] = {20,10,30}.
