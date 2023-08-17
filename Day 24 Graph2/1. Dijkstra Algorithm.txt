@@ -1,0 +1,68 @@
+Dijkstra Algorithm
+------------------------------------------------------------------------------------------------------------------------------------------
+Given a weighted, undirected and connected graph of V vertices and an adjacency list adj where adj[i] is a list of lists containing two integers where the first integer of each list j denotes there is edge between i and j , second integers corresponds to the weight of that  edge . You are given the source vertex S and You to Find the shortest distance of all the vertex's from the source vertex S. You have to return a list of integers denoting shortest distance between each node and Source vertex S.
+ 
+Note: The Graph doesn't contain any negative weight cycle.
+
+Example 1:
+Input:
+V = 2
+adj [] = {{{1, 9}}, {{0, 9}}}
+S = 0
+Output:
+0 9
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1 : Using MinHeap
+
+TC : O(E log V)
+SC : O(V + E) + O(V)
+
+vector <int> dijkstra(int V, vector<vector<int>> adj[], int S) {
+	priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int, int>>>pq;
+	pq.push({0,S});
+	vector<int>dist(V, 1e9);
+	dist[S] = 0;
+	while(!pq.empty()) {
+		auto it = pq.top();
+		pq.pop();
+		int d = it.first;
+		int node = it.second;
+		for(auto it : adj[node]) {
+			int adjNode = it[0];
+			int distance = it[1];
+			if(distance + d < dist[adjNode]) {
+				dist[adjNode] = distance+d;
+				pq.push({dist[adjNode], adjNode});
+			}
+		}
+	}
+	return dist;
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 2 : Using Set
+
+TC : O(E log V)
+SC : O(V + E)
+
+vector <int> dijkstra(int V, vector<vector<int>> adj[], int S) {
+	set<pair<int, int>>st;
+	st.insert({0,S});
+	vector<int>dist(V, 1e9);
+	dist[S] = 0;
+	while(!st.empty()) {
+		auto it = *(st.begin());
+		st.erase(it);
+		int d = it.first;
+		int node = it.second;
+		for(auto it : adj[node]) {
+			int adjNode = it[0];
+			int distance = it[1];
+			if(distance + d < dist[adjNode]) {
+				if(dist[adjNode] != 1e9) st.erase({dist[adjNode], adjNode});
+				dist[adjNode] = distance+d;
+				st.insert({dist[adjNode], adjNode});
+			}
+		}
+	}
+	return dist;
+}
