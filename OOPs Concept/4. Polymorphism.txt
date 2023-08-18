@@ -1,0 +1,48 @@
+Polymorphism
+------------------------------------------------------------------------------------------------------------------------------------------
+Polymorphism: Polymorphism allows objects of different classes to be treated as objects of a common superclass. It enables you to write
+			  code that can work with objects of multiple types in a uniform way. Polymorphism is achieved through method overriding and
+			  method overloading.
+			  
+Method Overriding:
+			Method overriding is a fundamental concept in object-oriented programming (OOP), specifically in languages like C++, Java, and Python. It allows a subclass (derived class) to provide a specific implementation for a method that is already defined in its superclass (base class). The overridden method in the subclass has the same name, return type, and parameters as the method in the superclass, but it provides a different implementation.
+			
+Method Overloading: 
+			Method overloading is another essential concept in object-oriented programming (OOP). It allows a class to have multiple methods with the same name but different parameter lists. Each overloaded method can have a different number or type of parameters. The compiler determines which overloaded method to call based on the arguments provided during the function call.
+------------------------------------------------------------------------------------------------------------------------------------------
+#include <iostream>
+using namespace std;
+
+class Animal {
+public:
+    virtual void makeSound() {
+        cout << "Animal sound!" << endl;
+    }
+};
+
+class Bird : public Animal {
+public:
+    void makeSound() override {
+        cout << "Chirp chirp!" << endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override {
+        cout << "Woof woof!" << endl;
+    }
+};
+
+int main() {
+    Bird bird;
+    Dog dog;
+
+    Animal* animal1 = &bird;
+    Animal* animal2 = &dog;
+
+    animal1->makeSound();
+    animal2->makeSound();
+
+    return 0;
+}

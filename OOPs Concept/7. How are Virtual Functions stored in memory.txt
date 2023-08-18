@@ -1,0 +1,65 @@
+How are Virtual Functions stored in memory
+------------------------------------------------------------------------------------------------------------------------------------------
+Virtual functions are stored in memory using a mechanism called a "virtual function table" (vtable) or "virtual method table" (vtable).
+This mechanism is used by C++ compilers to implement polymorphism and enable dynamic dispatch of virtual function calls.
+------------------------------------------------------------------------------------------------------------------------------------------
+Here's how virtual functions are stored and used in memory:
+
+1. Virtual Function Table (vtable):
+===================================  
+   (i) Each class that contains at least one virtual function has an associated vtable.
+  (ii) The vtable is a data structure that holds pointers to the virtual functions of the class in the order they are declared.
+ (iii) The vtable is usually created by the compiler during the compilation process.
+  (iv) The vtable is shared among all instances of the same class.
+  
+2. Virtual Pointer (vptr):
+==========================
+  (i) Each object of a class with virtual functions contains a hidden pointer, known as the virtual pointer (vptr).
+ (ii) The vptr points to the class's vtable, allowing the object to access its virtual functions.
+(iii) The vptr is set up and managed by the compiler and runtime environment.
+
+3. Dynamic Dispatch:
+====================
+  (i) When a virtual function is called on an object, the compiler uses the vptr to access the appropriate vtable and then follows the
+	  pointer to the correct virtual function.
+ (ii) This process, known as dynamic dispatch, ensures that the correct overridden function of the actual object's type is called.
+------------------------------------------------------------------------------------------------------------------------------------------
+#include <iostream>
+using namespace std;
+
+class Base {
+public:
+    virtual void func1() {
+        cout << "Base::func1()" << endl;
+    }
+    virtual void func2() {
+        cout << "Base::func2()" << endl;
+    }
+};
+
+class Derived : public Base {
+public:
+    void func1() override {
+        cout << "Derived::func1()" << endl;
+    }
+    void func2() override {
+        cout << "Derived::func2()" << endl;
+    }
+};
+
+int main() {
+    Base* basePtr = new Derived();
+
+    basePtr->func1();  // Calls Derived::func1() dynamically
+    basePtr->func2();  // Calls Derived::func2() dynamically
+
+    delete basePtr;
+
+    return 0;
+}
+
+In this example, the Base class has a vtable containing pointers to func1() and func2(). The Derived class inherits the vtable from Base
+and overrides these functions with its own implementations.
+
+When we create a Derived object and access its virtual functions through a pointer of type Base*, the correct overridden functions are
+called based on the object's actual type. This dynamic dispatch is achieved through the vtable and vptr mechanism.

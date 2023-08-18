@@ -1,0 +1,45 @@
+Encapsulation
+------------------------------------------------------------------------------------------------------------------------------------------
+1. Encapsulation: Encapsulation refers to the bundling of data (attributes) and methods (functions) that operate on the data into a
+				  single unit called a class. The class serves as a blueprint for creating objects. Encapsulation helps in hiding the
+				  internal implementation details of an object and exposing only the necessary functionalities.
+------------------------------------------------------------------------------------------------------------------------------------------
+#include <iostream>
+using namespace std;
+
+class BankAccount {
+private:
+    string account_number;
+    double balance;
+
+public:
+    BankAccount(string acc_num, double initial_balance) {
+        account_number = acc_num;
+        balance = initial_balance;
+    }
+
+    void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+
+    void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+        }
+    }
+
+    double get_balance() {
+        return balance;
+    }
+};
+
+int main() {
+    BankAccount account("12345", 1000);
+    account.deposit(500);
+    account.withdraw(200);
+    cout << "Account balance: " << account.get_balance() << endl;
+
+    return 0;
+}

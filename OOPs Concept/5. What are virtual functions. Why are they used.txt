@@ -1,0 +1,65 @@
+What are virtual functions. Why are they used.
+------------------------------------------------------------------------------------------------------------------------------------------
+Virtual functions are a fundamental concept in C++ and other object-oriented programming languages. They are used to achieve runtime
+polymorphism (dynamic polymorphism) by allowing a function in a base class to be overridden by a function with the same signature in a
+derived class. This enables the selection of the appropriate function implementation based on the actual type of the object during
+runtime.
+------------------------------------------------------------------------------------------------------------------------------------------
+Here's how virtual functions work:
+------------------------------------------------------------------------------------------------------------------------------------------
+1. When a function is declared as virtual in a base class, any derived classes can provide their own implementation of that function using
+the override keyword.
+
+2. When a derived class overrides a virtual function, it provides a specific implementation for that function. This implementation is
+used when the function is called on an object of the derived class, even if the call is made through a pointer or reference of the base
+class.
+
+3. The decision of which overridden function to call is made at runtime, based on the actual type of the object being referred to. This 
+is achieved through the use of a virtual function table (vtable) maintained by the compiler.
+------------------------------------------------------------------------------------------------------------------------------------------
+#include <iostream>
+using namespace std;
+
+class Animal {
+public:
+    virtual void makeSound() {
+        cout << "Animal sound!" << endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override {
+        cout << "Woof woof!" << endl;
+    }
+};
+
+class Cat : public Animal {
+public:
+    void makeSound() override {
+        cout << "Meow!" << endl;
+    }
+};
+
+int main() {
+    Animal* animals[3];
+    animals[0] = new Animal();
+    animals[1] = new Dog();
+    animals[2] = new Cat();
+
+    for (int i = 0; i < 3; ++i) {
+        animals[i]->makeSound();  // Calls appropriate overridden function
+    }
+
+    // Clean up
+    for (int i = 0; i < 3; ++i) {
+        delete animals[i];
+    }
+
+    return 0;
+}
+
+Output : Animal sound!
+	 Woof woof!
+	 Meow!
+

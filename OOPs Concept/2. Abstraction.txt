@@ -1,0 +1,47 @@
+Abstraction
+------------------------------------------------------------------------------------------------------------------------------------------
+Abstraction: Abstraction involves representing essential features of an object while hiding unnecessary details. It allows you to create
+			 a simplified view of an object, focusing on what it does rather than how it does it. Abstract classes and interfaces are
+			 used to achieve abstraction.
+----------------------------------------------------------------------------------------------------------------------------------------- 
+#include <iostream>
+using namespace std;
+
+class Shape {
+public:
+    virtual double calculateArea() = 0;
+};
+
+class Circle : public Shape {
+private:
+    double radius;
+
+public:
+    Circle(double r) : radius(r) {}
+
+    double calculateArea() override {
+        return 3.14159 * radius * radius;
+    }
+};
+
+class Rectangle : public Shape {
+private:
+    double width, height;
+
+public:
+    Rectangle(double w, double h) : width(w), height(h) {}
+
+    double calculateArea() override {
+        return width * height;
+    }
+};
+
+int main() {
+    Circle circle(5);
+    Rectangle rectangle(4, 6);
+
+    cout << "Circle area: " << circle.calculateArea() << endl;
+    cout << "Rectangle area: " << rectangle.calculateArea() << endl;
+
+    return 0;
+}

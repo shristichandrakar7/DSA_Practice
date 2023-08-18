@@ -1,0 +1,45 @@
+Inheritance
+------------------------------------------------------------------------------------------------------------------------------------------
+Inheritance: Inheritance allows a class (subclass/derived class) to inherit properties and behaviors from another class (superclass/base
+			 class). It promotes code reuse and the creation of a hierarchical structure of classes.
+------------------------------------------------------------------------------------------------------------------------------------------
+#include <iostream>
+using namespace std;
+
+class Animal {
+protected:
+    string name;
+
+public:
+    Animal(string n) : name(n) {}
+
+    virtual string speak() = 0;
+};
+
+class Dog : public Animal {
+public:
+    Dog(string n) : Animal(n) {}
+
+    string speak() override {
+        return "Woof!";
+    }
+};
+
+class Cat : public Animal {
+public:
+    Cat(string n) : Animal(n) {}
+
+    string speak() override {
+        return "Meow!";
+    }
+};
+
+int main() {
+    Dog dog("Buddy");
+    Cat cat("Whiskers");
+
+    cout << dog.name << " says: " << dog.speak() << endl;
+    cout << cat.name << " says: " << cat.speak() << endl;
+
+    return 0;
+}
