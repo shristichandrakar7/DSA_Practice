@@ -28,7 +28,7 @@ vector<int> maxMinWindow(vector<int> a, int n) {
     // calculating left smaller position
     for(int i = 0; i < n; i++) {
         while(!st.empty() && a[i] <= a[st.top()]) st.pop();
-        if(!st.empty())leftsmall[i] = st.top();
+        if(!st.empty()) leftsmall[i] = st.top();
         st.push(i);
     }
     while(!st.empty()) st.pop();
