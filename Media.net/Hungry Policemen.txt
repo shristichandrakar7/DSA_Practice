@@ -1,0 +1,80 @@
+Hungry Policemen
+-----------------------------------------------------------------------------------------------------------------------
+You are given a graph of N nodes and M edges and each edge has some time associated with it.
+There is a policeman standing on each node except Node N
+All of them get a report that there is thief on Node N and the policemen start moving towards it, but all of them have been hungry for days, so they are looking to visit a few restaurants as well, before reaching the node N.
+There are K restaurants present on some nodes, and each restaurant has some satisfaction. Now a policeman will only go to a restaurant if and only if the satisfaction he receives by reaching the restaurant is greater than the time he has invested in reaching there and then going to the Node N.
+Find and return the Qumber of policemen who will have a meal at a restaurant.
+
+Input Format:
+The first argument contains an integer A, representing the number of nodes.
+The second argument of input contains a 2-d matrix of size M x 3, 8, where Node B[i][8] and Node 8[1][1] are bidirectionally connected with an wige that cakes #[1][2] time to go through it. 
+The third argument of input contains a 2-d matrix of size K x 2, C, where Node C[i][0] has a restaurant that has C[1][1] satisfaction.
+
+-----------------------------------------------------------------------------------------------------------------------
+#include <bits/stdc++.h>
+using namespace std;
+
+int solve(int A, vector<vector<int>>& B, vector<vector<int>>& C) {
+    vector<pair<int,int>> adj[A+1];
+    for(int i=0;i<B.size();i++){
+        int a = B[i][0];
+        int b = B[i][1];
+        int w = B[i][2];
+        adj[a].push_back({b,w});
+        adj[b].push_back({a,w});
+    }
+    vector<int> v(A+1,-1); 
+    priority_queue<pair<int,int>> pq;
+    for(int i=0;i<C.size();i++){
+        int a = C[i][0];
+        int b = C[i][1];
+        v[a]=b;
+        pq.push({b, a});
+    }
+    while(!pq.empty()){
+        int w=pq.top().first;
+        int node=pq.top().second;
+        pq.pop();
+        for (auto i:adj[node]){
+            int newnode=i.first;
+            int len=i.second;
+            if(w-len>v[newnode]) {
+                v[newnode]=w-len; 
+                pq.push({v[newnode], newnode});
+            }
+        }
+    } 
+    int cnt=0; 
+    for(int i=1;i<=A;i++) {
+        if(v[i]>=0) cnt++;
+    }
+    return cnt;
+}
+
+int main() {
+#ifndef ONLINE_JUDGE
+    //for getting input from input.txt
+    freopen("input.txt", "r", stdin);
+    //for writing output to output.txt
+    freopen("output.txt", "w", stdout);
+#endif
+    int n,m; 
+    cin>>n>>m;
+    vector<vector<int>>B;
+    for(int i = 0; i < m; i++) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        B.push_back({a,b,c});
+    }
+    int k;
+    cin>>k;
+    vector<vector<int>>C;
+    for(int i = 0; i < k; i++) {
+        int a, b;
+        cin >> a >> b;
+        C.push_back({a, b});
+    } 
+    cout<<solve(n, B, C)<<endl;
+    return 0;
+}
