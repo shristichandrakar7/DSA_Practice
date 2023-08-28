@@ -1,0 +1,42 @@
+Damaged Roads
+----------------------------------------------------------------------------
+#include <bits/stdc++.h>
+  using namespace std;
+
+  int main() {
+
+    int n,m; 
+    int mod = 1000000007;
+    cin>>n>>m;
+    vector<int> a(n-1), b(m-1);
+    for(int i = 0; i < n-1; i++){
+      cin>>a[i];
+    }
+    for(int i = 0; i < m-1; i++){
+      cin>>b[i];
+    }
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+    a.push_back(1e9);
+    b.push_back(1e9);
+    
+    int r = n, c = m, i = 0, j = 0, ans = 0;
+    while(i < n && j < m){
+      if(a[i] <= b[j]){
+        if(a[i] == 1e9) break;
+        ans = (ans + (c*a[i]) % mod) % mod;
+        i++;
+        r--;
+      }
+      else{
+        ans = (ans + (r*b[j]) % mod) % mod;
+        j++;
+        c--;
+      }
+    }
+    
+    cout<<ans;
+
+    return 0;
+
+  }

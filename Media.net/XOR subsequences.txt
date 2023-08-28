@@ -1,0 +1,61 @@
+XOR subsequences
+------------------------------------------------------------------------------------------------------
+Problem Description
+You are given an array A, you have to create an array B which is a subsequence of A.
+An array B is called valid if it satisfies both the conditions
+
+B[i] < B[i+1] where 1 <= i<|B|.
+bit_count( B[1] ^. ^ B[i-1] ^ B[i]) <= bit_count(B[i+1]) where 1 <= i < |B|.
+.........
+Let X be the Bitwise XOR of all the elements in valid array B.
+You need to find the number of different values of X that can be formed.
+Note: bit_count(t) is the number of set bits present in the binary representation of t
+Problem Constraints
+1 <= IAl <= 10^5
+1 <= A[i] <= 100
+
+Input Format
+The first argument is an integer array A
+
+Output Format
+Return an integer denoting the number of different values of X that can be formed
+
+-----------------------------------------------------------------------------------------------------
+#include<bits/stdc++.h>
+using namespace std;
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define mod 1000000007
+#define endl "\n"
+#define test ll t; cin>>t; while(t--)
+typedef long long int ll;
+int main() {
+
+    FIO;
+    test
+    {
+        ll n; cin>>n;
+        vector<ll>a(n);
+        map<ll,ll>mp;
+        vector<ll>ans;
+        for(int i=0;i<n;i++){
+           cin>>a[i];
+           mp[a[i]]++;
+           if(mp[a[i]]==1) ans.push_back(i+1);
+        }
+        cout<<ans.size()<<endl;
+        for(auto it:ans) cout<<it<<" ";
+        cout<<endl;
+    }
+    return 0;
+}
+-----------------------------------------------------------------------------------------------------------------
+int Solution::solve(vector &A) {
+int res = 0 , n = A.size() ;
+	for (int i = 0 ; i < n ; i++){
+		int val = (i+1)*(n-i);
+		if (val % 2 == 1){
+			res = res ^ A[i] ;
+		}
+	}
+	return res;
+}
