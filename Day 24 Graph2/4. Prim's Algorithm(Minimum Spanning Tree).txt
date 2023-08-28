@@ -1,0 +1,48 @@
+Prim's Algorithm(Minimum Spanning Tree)
+------------------------------------------------------------------------------------------------------------------------------------------
+Given a weighted, undirected and connected graph of V vertices and E edges. The task is to find the sum of weights of the edges of the Minimum Spanning Tree.
+
+Example 1:
+Input:
+3 3
+0 1 5
+1 2 3
+0 2 1
+Output: 4
+Explanation: The Spanning Tree resulting in a weight of 4.
+
+Example 2:
+Input:
+2 1
+0 1 5
+Output: 5
+Explanation: Only one Spanning Tree is possible which has a weight of 5.
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : O(E*log(E))
+SC : O(E)
+
+typedef pair<int,int> pii;
+int spanningTree(int V, vector<vector<int>> adj[]){
+	priority_queue<pii, vector<pii>, greater<pii>> pq;
+	pq.push({0,0});//{wt,node}
+	vector<int> vis(V,0);
+	int sum=0;
+	while(!pq.empty()){
+		int wt=pq.top().first;
+		int node=pq.top().second;
+		pq.pop();
+		if(vis[node]) continue;
+		sum+=wt;
+		vis[node]=1;
+		for(auto it:adj[node]){
+			int adjNode=it[0];
+			int adjWei=it[1];
+			if(!vis[adjNode]){
+				pq.push({adjWei, adjNode});
+			}
+		}
+	}
+	return sum;
+}

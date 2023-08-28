@@ -1,0 +1,66 @@
+Kosaraju's Algorithm (Strongly Connected Components)
+------------------------------------------------------------------------------------------------------------------------------------------
+Given a Directed Graph with V vertices (Numbered from 0 to V-1) and E edges, Find the number of strongly connected components in the graph.
+
+Example 1:
+Input:
+Output: 3
+Explanation: We can clearly see that there are 3 Strongly Connected Components in the Graph.
+
+Example 2:
+Input:
+Output: 1
+Explanation: All of the nodes are connected to each other. So, there's only one SCC.
+------------------------------------------------------------------------------------------------------------------------------------------
+Approach 1:
+
+TC : 3O(V+E)
+SC : O(V+E)+O(2V)
+
+void dfs(int i, vector<vector<int>>& adj, vector<int>& vis, stack<int>& st){
+	vis[i]=1;
+	for(auto it:adj[i]){
+		if(!vis[it]){
+			dfs(it,adj,vis,st);
+		}
+	}
+	st.push(i);
+}
+void dfsInv(int i, vector<int> adjInv[], vector<int>& vis){
+	vis[i]=1;
+	for(auto it:adjInv[i]){
+		if(!vis[it]){
+			dfsInv(it,adjInv,vis);
+		}
+	}
+}
+public:
+int kosaraju(int V, vector<vector<int>>& adj){
+	stack<int> st;
+	vector<int> vis(V,0);
+	//Step1: sort all the edges acc. to finishing line
+	for(int i=0; i<V; i++){
+		if(!vis[i]){
+			dfs(i,adj,vis,st);
+		}
+	}
+	//step2: reverse the graph
+	vector<int> adjInv[V];
+	for(int i=0; i<V; i++){
+		vis[i]=0;
+		for(auto it:adj[i]){
+			adjInv[it].push_back(i);
+		}
+	}
+	//step3: do dfs
+	int cnt=0;
+	while(!st.empty()){
+		int node=st.top();
+		st.pop();
+		if(!vis[node]){
+			cnt++;
+			dfsInv(node,adjInv,vis);
+		}
+	}
+	return cnt;
+}
