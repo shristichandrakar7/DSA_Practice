@@ -23,7 +23,7 @@ bool f(node* root, int x, vector<int>& ans) {
 	if(root == NULL) return false;
 	ans.push_back(root->val);
 	if(root->val==x) return true;
-	if(f(root->left,x,ans) || (root->right,x,ans)) return true;
+	if(f(root->left,x,ans) || f(root->right,x,ans)) return true;
 	ans.pop_back();
 	return false;
 }

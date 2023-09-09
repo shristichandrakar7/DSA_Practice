@@ -27,37 +27,33 @@ Approach 2:
 TC : O(n log n)
 SC : O(n)
 
-int merge(vector<int>& nums, int low, int mid, int high){
-	int j=mid, cnt=0;											
-	for(int i=low; i<mid; i++){									
-		while(j<=high && nums[i]>(long long int)2*nums[j]) j++;
-		cnt+=(j-mid);
+int merge(vector<int>& arr, int low, int mid, int high){
+	int cnt=0, l=mid+1;
+	for(int k=low; k<=mid; k++){
+		while(l<=high && arr[k]>(long long int)2*arr[l]) l++;
+		cnt+=(l-(mid+1));
 	}
-	int i=low;
-	j=mid;
+	int i=low, j=mid+1;
 	vector<int> temp;
-	while(i<mid && j<=high){
-		if(nums[i]<=nums[j]) temp.push_back(nums[i++]);
-		else temp.push_back(nums[j++]);
+	while(i<=mid && j<=high){
+		if(arr[i]<=arr[j]) temp.push_back(arr[i++]);
+		else temp.push_back(arr[j++]);
 	}
-	while(i<mid) temp.push_back(nums[i++]);
-	while(j<=high) temp.push_back(nums[j++]);
-	for(int k=low; k<=high; k++){
-		nums[k]=temp[k-low];
-	}
+	while(i<=mid) temp.push_back(arr[i++]);
+	while(j<=high) temp.push_back(arr[j++]);
+	for(int m=low; m<=high; m++)
+		arr[m]=temp[m-low];
 	return cnt;
 }
-int mergeSort(vector<int>& nums, int low, int high) {
-	int cnt = 0;
-	if(low >= high) return cnt;
-	int mid = low + (high-low)/2;
-	cnt += mergeSort(nums, low, mid);
-	cnt += mergeSort(nums, mid+1, high);
-	cnt += merge(nums, low, mid+1, high);
-	return cnt;
+int mergeSort(vector<int>& arr, int low, int high){
+	int count=0;
+	if(low >= high) return count;
+	int mid=low+(high-low)/2;
+	count+=mergeSort(arr,low,mid);
+	count+=mergeSort(arr,mid+1,high);
+	count+=merge(arr,low,mid,high);
+	return count;
 }
-
-int reversePairs(vector<int>& nums) {
-	int n = nums.size();
-	return mergeSort(nums, 0, n-1);
+int countRevPairs(int n, vector<int> arr) {
+	return mergeSort(arr,0,n-1);
 }
