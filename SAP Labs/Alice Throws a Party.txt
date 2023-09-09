@@ -1,0 +1,76 @@
+Alice Throws a Party
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#include<bits/stdc++.h>
+using namespace std;
+
+bool canInvite(vector<int>& A, int x, int friends) {
+    int n = A.size();
+    vector<int>candies(n);
+    for (int i = 0; i < n; i++) {
+        candies[i] = A[i];
+    }
+
+    int sum = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (candies[i] == 0) continue;
+        if (candies[i] > 0) {
+            sum += 1;
+            candies[i]--;
+        }
+        if (sum == x) {
+            friends--;
+            sum = 0;
+            i = -1;
+        }
+        if (friends == 0) return true;
+    }
+
+    return false;
+}
+
+int maxFriends(int n, int x, vector<int>& A) {
+    sort(A.begin(), A.end(), greater <>());
+
+    int left = 1;
+    int right = 1;
+    for (auto it : A) right = max(right, it);
+    int maxPossibleFriends = 0;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (canInvite(A, x, mid)) {
+            maxPossibleFriends = mid;
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return maxPossibleFriends;
+}
+
+int main() {
+#ifndef ONLINE_JUDGE
+    //for getting input from input.txt
+    freopen("input.txt", "r", stdin);
+    //for writing output to output.txt
+    freopen("output.txt", "w", stdout);
+#endif
+
+    int n, x;
+    cin >> n;
+    cin >> x;
+    vector<int>nums;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        nums.push_back(x);
+    }
+    int ans = maxFriends(n, x, nums);
+    cout << ans << endl;
+
+    return 0;
+}
