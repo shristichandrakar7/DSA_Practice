@@ -1,0 +1,86 @@
+You are given an array of N numbers. Your task is to find the greatest K-digit number that can be formed from each number. To achieve this, you can ignore a few smaller digits without changing the original order of the number. If a number A, has less than K digits, you should consider it as is.
+
+Write a program that takes an array of N numbers and an integer K as i Read the input , and returns a list of the greatest STDIN and print the output to STDOUT. Do not write arbitrary strings anywhere in the digit numbers formed from each element in the array. am, as these contribute to the standard and test cases will fail.
+
+Constraints: ne
+
+Hpinc 82657-10
+
+82655
+
+82657-10
+
+length of Afil<=9
+
+Input Format:
+
+The first line of input contains N and K, where N is the number of elements in the list and K is the K-digit greatest number that needs to be printed. The second line of input consists of N integers separated by a single white space.
+
+Output Format:
+
+A single line of output that contains N space-separated integers, which are the K-digit greatest numbers that can be formed by using existing array elements.
+
+Sample Input1:
+
+52
+
+432 567 890 657 34
+
+Sample Output1: 43 67 89 67 34 20266383
+
+Explanation1:
+
+From the Sample Input1, we have:
+
+The two-digit greatest number that can be formed from 432 by removing the smaller digit 2 from the number without changing the order is 43.
+---------------------------------------------------------------------------------------------------------------------------
+#include<bits/stdc++.h>
+using namespace std;
+
+int findGreatestKDigitNumber(int num, int K) {
+    string numStr = to_string(num);
+    int numDigits = numStr.length();
+
+    if (K >= numStr.length()) {
+        return num;
+    }
+
+    for (int i = 0; i < numDigits - K; i++) {
+        int mini = 0;
+        for (int j = 1; j < numStr.length(); j++) {
+            if (numStr[j] < numStr[mini]) {
+                mini = j;
+            }
+        }
+        numStr.erase(mini, 1);
+    }
+    return stoi(numStr);
+}
+
+int main() {
+#ifndef ONLINE_JUDGE
+    //for getting input from input.txt
+    freopen("input.txt", "r", stdin);
+    //for writing output to output.txt
+    freopen("output.txt", "w", stdout);
+#endif
+    int N, K;
+    cin >> N >> K;
+
+    vector<int> numbers(N);
+    for (int i = 0; i < N; i++) {
+        cin >> numbers[i];
+    }
+
+    for (int i = 0; i < N; i++) {
+        int greatestKDigit = findGreatestKDigitNumber(numbers[i], K);
+        cout << greatestKDigit;
+        if (i < N - 1) {
+            cout << " ";
+        }
+    }
+
+    cout << endl;
+
+    return 0;
+}
