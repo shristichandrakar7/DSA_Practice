@@ -1,0 +1,203 @@
+---------------------------------------------------------------------------------------------------------------------------------------------SALARY
+#include <bits/stdc++.h>
+using namespace std;
+int solve(int N, int K, vector<int>& parents, vector<int>& earning_members) {
+    int h = ceil(log2(N));
+    vector<vector<int>> jump(h, vector<int>(N, 0));
+    jump[0][0] = 0;
+    vector<bool> have_salary(N, false);
+    vector<int> ans;
+
+    for (int i = 1; i < h; ++i) {
+        for (int j = 0; j < N; ++j) {
+            jump[i][j] = jump[i - 1][jump[i - 1][j]];
+        }
+    }
+
+    auto getKthAncestor = [&](int node, int k) {
+        int v = 0;
+        while (k) {
+            if (k & 1) {
+                node = jump[v][node];
+            }
+            k >>= 1;
+            ++v;
+        }
+        return node;
+    };
+
+    for (int i : earning_members) {
+        int l = 0, r = N - 1;
+        if (have_salary[i]) {
+            continue;
+        }
+        int res = i;
+        while (l < r) {
+            int m = (l + r + 1) >> 1;
+            int node = getKthAncestor(i, m);
+            if (have_salary[node]) {
+                r = m - 1;
+            } else {
+                res = node;
+                l = m;
+            }
+        }
+        have_salary[res] = true;
+        ans.push_back(res);
+    }
+    for (int i = 0; i < ans.size(); ++i) {
+        cout << ans[i];
+        if (i < ans.size() - 1) {
+            cout << " ";
+        }
+    }
+    return 0;
+}
+
+int main() {
+    int N, K;
+    cin >> N >> K;
+    vector<int> parents(N);
+    vector<int> earning_members(K);
+
+    for (int i = 0; i < N; ++i) {
+        cin >> parents[i];
+    }
+
+    for (int i = 0; i < K; ++i) {
+        cin >> earning_members[i];
+    }
+
+    solve(N, K, parents, earning_members);
+
+    return 0;
+}
+---------------------------------------------------------------------------------------------------------------------------------------------DIVISOR
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int smallest_prime_factor(int n) {
+    if (n % 2 == 0) {
+        return 2;
+    }
+    for (int i = 3; i * i <= n; i += 2) {
+        if (n % i == 0) {
+            return i;
+        }
+    }
+    return n;
+}
+
+vector<int> Divisor_Queries(int N, int Q, vector<int>& a, vector<vector<int>>& Queries) {
+    vector<int> result;
+
+    for (auto& query : Queries) {
+        if (query[0] == 1) {
+            int l = query[1], r = query[2];
+            for (int i = l - 1; i < r; ++i) {
+                int d = smallest_prime_factor(a[i]);
+                a[i] = a[i] / d;
+            }
+        } else if (query[0] == 2) {
+            int l = query[1], r = query[2];
+            int total_sum = 0;
+            for (int i = l - 1; i < r; ++i) {
+                total_sum += a[i];
+            }
+            result.push_back(total_sum);
+        } else if (query[0] == 3) {
+            int l = query[1], k = query[2];
+            a[l - 1] = k;
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    int N, Q;
+    cin >> N >> Q;
+    vector<int> a(N);
+    vector<vector<int>> Queries(Q, vector<int>(3));
+
+    for (int i = 0; i < N; ++i) {
+        cin >> a[i];
+    }
+
+    for (int i = 0; i < Q; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            cin >> Queries[i][j];
+        }
+    }
+
+    vector<int> output = Divisor_Queries(N, Q, a, Queries);
+
+    for (int value : output) {
+        cout << value << "\n";
+    }
+
+    return 0;
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------ARRAY AND QUERIES
+
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> solve(int N, vector<int>& A, int Q, vector<vector<int>>& Queries) {
+    vector<int> result;
+
+    for (auto& query : Queries) {
+        if (query[0] == 1) {
+            int L = query[1], X = query[2];
+            A[L - 1] = X;
+        } else if (query[0] == 2) {
+            int L = query[1], R = query[2], X = query[3];
+            bool found = false;
+            for (int P = L - 1; P < R; ++P) {
+                if (A[P] <= X) {
+                    result.push_back(P + 1);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                result.push_back(1);
+            }
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    int N, Q;
+    cout << "Enter the length of the list A: ";
+    cin >> N;
+    vector<int> A(N);
+
+    cout << "Enter the elements of the list A separated by space: ";
+    for (int i = 0; i < N; ++i) {
+        cin >> A[i];
+    }
+
+    cout << "Enter the number of queries: ";
+    cin >> Q;
+
+    vector<vector<int>> Queries(Q, vector<int>(4));
+    cout << "Enter queries as space-separated values:" << endl;
+    for (int i = 0; i < Q; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            cin >> Queries[i][j];
+        }
+    }
+
+    vector<int> results = solve(N, A, Q, Queries);
+
+    cout << "Results:" << endl;
+    for (int value : results) {
+        cout << value << " ";
+    }
+
+    return 0;
+}
