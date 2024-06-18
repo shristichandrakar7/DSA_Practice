@@ -7,9 +7,9 @@ SC : O(1)
 
 int ncr(int n, int r){
 	int ans=1;
-	for(int i=0; i<r; i++){
-		ans*=(n-i);
-		ans/=(i+1);
+	for(int i=1; i<=r; i++){
+		ans*=(n-(i-1));
+		ans/=(i);
 	}
 	return ans;
 }
@@ -22,16 +22,16 @@ Variation 2: Given the row number n. Print the n-th row of Pascal’s triangle.
 TC : O(n)
 SC : O(1)
 
-vector<int> pascalTriangle(int n) {
-	vector<int> v;
-	int ans=1;
-	v.push_back(ans);
-	for(int col=1; col<n; col++){
-		ans*=(n-col);
-		ans/=col;
-		v.push_back(ans);
-	}
-	return v;
+vector<int> getRow(int n) {
+    vector<int> res;
+    long long ans=1;
+    res.push_back(1);
+    for(int i=1; i<=n; i++){
+        ans*=(n-(i-1));
+        ans/=i;
+        res.push_back(ans);
+    }
+    return res;
 }
 ------------------------------------------------------------------------------------------------------------------------------------------
 Variation 3: Given the number of rows n. Print the first n rows of Pascal’s triangle.
@@ -39,18 +39,21 @@ Variation 3: Given the number of rows n. Print the first n rows of Pascal’s tr
 TC : O(n*n)
 SC : O(1)
 
-vector<vector<int>> pascalTriangle(int n) {
-	vector<vector<int>> res;
-	for(int row=1; row<=n; row++){
-		vector<int> v;
-		int ans=1;
-		v.push_back(ans);
-		for(int col=1; col<row; col++){
-			ans*=(row-col);
-			ans/=col;
-			v.push_back(ans);
-		}
-		res.push_back(v);
-	}
-	return res;
+vector<vector<int>> f(int n){
+    vector<vector<int>> res;
+    vector<int> f;
+    res.push_back({1});
+    if(n==0) {f={1};}
+    for(int row=1; row<=n; row++){
+        vector<int> v;
+        long long ans=1;
+        v.push_back(ans);
+        for(int col=1; col<=row; col++){
+            ans*=(row-(col-1));
+            ans/=col;
+            v.push_back(ans);
+        }
+        res.push_back(v);
+    }
+    return res;
 }
