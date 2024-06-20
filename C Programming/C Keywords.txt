@@ -1,0 +1,214 @@
+Certainly! Here's an overview of various keywords in the C programming language, which are reserved words with special meaning:
+
+1. **auto**: Used for automatic variables, it is the default storage class for local variables. In modern C, it's rarely used explicitly.
+   ```c
+   auto int a = 5;
+   ```
+
+2. **break**: Exits from the current loop or switch statement.
+   ```c
+   while (1) {
+       break;  // Exit the loop
+   }
+   ```
+
+3. **case**: Defines a branch in a switch statement.
+   ```c
+   switch (expression) {
+       case 1: 
+           // Code
+           break;
+       case 2: 
+           // Code
+           break;
+   }
+   ```
+
+4. **char**: Declares a character variable.
+   ```c
+   char letter = 'A';
+   ```
+
+5. **const**: Declares a variable as constant, meaning its value cannot be changed after initialization.
+   ```c
+   const int max = 100;
+   ```
+
+6. **continue**: Skips the remaining statements in the current iteration of the loop and proceeds with the next iteration.
+   ```c
+   for (int i = 0; i < 10; i++) {
+       if (i % 2 == 0) continue;  // Skip even numbers
+       printf("%d ", i);
+   }
+   ```
+
+7. **default**: Specifies the default case in a switch statement, executed if no case matches.
+   ```c
+   switch (expression) {
+       case 1: 
+           // Code
+           break;
+       default: 
+           // Code for default case
+   }
+   ```
+
+8. **do**: Used with `while` to create a do-while loop, which executes the block of code at least once.
+   ```c
+   int i = 0;
+   do {
+       printf("%d ", i);
+       i++;
+   } while (i < 5);
+   ```
+
+9. **double**: Declares a variable of type double, a double-precision floating-point number.
+   ```c
+   double price = 19.99;
+   ```
+
+10. **else**: Specifies an alternative block of code if the `if` condition is false.
+    ```c
+    if (condition) {
+        // Code if true
+    } else {
+        // Code if false
+    }
+    ```
+
+11. **enum**: Declares an enumeration, a distinct type with a set of named values.
+    ```c
+    enum color { red, green, blue };
+    ```
+
+12. **extern**: Declares a variable or function that is defined in another file or scope.
+    ```c
+    extern int num;
+    ```
+
+13. **float**: Declares a floating-point variable.
+    ```c
+    float temperature = 36.6;
+    ```
+
+14. **for**: Creates a loop that is controlled by an initialization, a condition, and an increment/decrement operation.
+    ```c
+    for (int i = 0; i < 10; i++) {
+        printf("%d ", i);
+    }
+    ```
+
+15. **goto**: Transfers control to the labeled statement.
+    ```c
+    goto label;
+    // Some code
+    label:
+    // Code to jump to
+    ```
+
+16. **if**: Executes a block of code if the specified condition is true.
+    ```c
+    if (condition) {
+        // Code if true
+    }
+    ```
+
+17. **int**: Declares an integer variable.
+    ```c
+    int age = 30;
+    ```
+
+18. **long**: Declares a long integer variable, a type that can store a larger range of values than a regular integer.
+    ```c
+    long distance = 123456789L;
+    ```
+
+19. **register**: Suggests that the variable be stored in a CPU register for faster access (this is only a suggestion to the compiler).
+    ```c
+    register int counter = 0;
+    ```
+
+20. **return**: Exits from a function and optionally returns a value.
+    ```c
+    return 0;
+    ```
+
+21. **short**: Declares a short integer variable, typically smaller in range than a regular integer.
+    ```c
+    short number = 10;
+    ```
+
+22. **signed**: Specifies that a variable can hold both positive and negative values (the default for `int` and `char`).
+    ```c
+    signed int value = -100;
+    ```
+
+23. **sizeof**: Returns the size in bytes of a type or variable.
+    ```c
+    int size = sizeof(int);
+    ```
+
+24. **static**: Declares a static variable that retains its value between function calls or restricts the visibility of a function or variable to the file level.
+    ```c
+    static int counter = 0;
+    ```
+
+25. **struct**: Defines a structure, a user-defined data type that groups related variables of different types.
+    ```c
+    struct Point {
+        int x;
+        int y;
+    };
+    ```
+
+26. **switch**: Selects one of many code blocks to execute, based on the value of an expression.
+    ```c
+    switch (expression) {
+        case 1: 
+            // Code
+            break;
+        case 2: 
+            // Code
+            break;
+    }
+    ```
+
+27. **typedef**: Creates a new name for an existing type.
+    ```c
+    typedef unsigned long ulong;
+    ```
+
+28. **union**: Defines a union, a user-defined type that allows storing different data types in the same memory location.
+    ```c
+    union Data {
+        int i;
+        float f;
+        char str[20];
+    };
+    ```
+
+29. **unsigned**: Declares a variable that can only hold non-negative values.
+    ```c
+    unsigned int positive = 100;
+    ```
+
+30. **void**: Specifies that a function does not return a value or declares a pointer to an unspecified type.
+    ```c
+    void function() {
+        // Code
+    }
+    ```
+
+31. **volatile**: Tells the compiler that a variable may change at any time, preventing certain optimizations.
+    ```c
+    volatile int timer;
+    ```
+
+32. **while**: Creates a loop that continues as long as the specified condition is true.
+    ```c
+    while (condition) {
+        // Code
+    }
+    ```
+
+These keywords are reserved, meaning they cannot be used for variable names, function names, or any other identifiers. They form the fundamental building blocks of C programming.
